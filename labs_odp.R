@@ -27,7 +27,8 @@ goodBadProp <- function(tab, p){
     warning("liczba p poza przedzialem (0, 1)")
   }
   tab$GoodBad <- ifelse(tab$U > p, 1, 0)
-  return(tab)
+  return(tab[, .N, by = GoodBad])
+  
 }
 
 
