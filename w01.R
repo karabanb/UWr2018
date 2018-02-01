@@ -1,5 +1,5 @@
 gcrm() # rm(list=ls())
-gcHi(1) # Hello World!
+gcHi(1) # Hello World! # poprzednie kodowanie chuj wie jakie
    
 #!################################################################### data.table
 # https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html
