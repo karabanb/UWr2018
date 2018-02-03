@@ -55,6 +55,16 @@ Wyznacz (korzystając z funckjonalności data.table) statystyki opisowe
 kolumn U, Z, E w rozbiciu względem czy P jest większe od swojej śedniej. Czy
 można to zrobić bez dodawania nowych kolumn, wyliczania "na boku" średniej P?
 
+### rozwiazanie ###
+
+n <- 100000
+
+rndNumbers <- data.table(U = runif(n),
+                         Z = rnorm(n),
+                         E = rexp(n),
+                         G = rbinom(n, 1, 0.6),
+                         P = rpois(n, 2)
+                         )
 # Zadanie 4
 Do tabeli rndNumbers z zadania 3 dodaj kolumnę Id przypisując do niej ".I".
 Stwórz tabelę rndNumbers2 jako podzbiór tabeli rndNumbers dla Id <= 10.
