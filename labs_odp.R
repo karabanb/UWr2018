@@ -23,9 +23,9 @@ library(data.table)
 x <- data.table(U = runif(10))
 
 goodBadProp <- function(tab, p){
-  if(p >= 1 | p <= 0){
-    warning("liczba p poza przedzialem (0, 1)")
-  }
+
+  stopifnot(is.double(p), p >= 1, p <= 0)
+  
   tab$GoodBad <- ifelse(tab$U > p, 1, 0)
   return(tab[, .N, by = GoodBad])
   
