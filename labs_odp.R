@@ -23,14 +23,15 @@ library(data.table)
 x <- data.table(U = runif(10))
 
 goodBadProp <- function(tab, p){
-  if(p >= 1 | p <= 0){
-    warning("liczba p poza przedzialem (0, 1)")
-  }
-  tab$GoodBad <- ifelse(tab$U > p, 1, 0)
+
+  stopifnot(is.double(p), p < 1, p > 0)
+  
+  tab$GoodBad <- ifelse(tab[, 1] > p, 1, 0)
   return(tab[, .N, by = GoodBad])
   
 }
 
+goodBadProp(x, 0.4)
 
 ## Zadanie 2 ###
 http://datatable.r-forge.r-project.org/datatable-intro.pdf
@@ -54,6 +55,20 @@ kolumn U, Z, E w rozbiciu względem kolumny G.
 Wyznacz (korzystając z funckjonalności data.table) statystyki opisowe 
 kolumn U, Z, E w rozbiciu względem czy P jest większe od swojej śedniej. Czy
 można to zrobić bez dodawania nowych kolumn, wyliczania "na boku" średniej P?
+
+### rozwiazanie ###
+
+n <- 100000
+
+rndNumbers <- data.table(U = runif(n),
+                         Z = rnorm(n),
+                         E = rexp(n),
+                         G = rbinom(n, 1, 0.6),
+                         P = rpois(n, 2)
+                         )
+
+summary(rndNumbers)
+
 
 # Zadanie 4
 Do tabeli rndNumbers z zadania 3 dodaj kolumnę Id przypisując do niej ".I".
