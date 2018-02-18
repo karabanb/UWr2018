@@ -27,11 +27,13 @@ goodBadProp <- function(tab, p){
   stopifnot(is.double(p), p < 1, p > 0)
   
   tab$GoodBad <- ifelse(tab[, 1] > p, 1, 0)
-  return(tab[, .N, by = GoodBad])
+  #return(tab[, mean(.GoodBad), by = GoodBad])
+  #as.data.table(prop.table(table(tab$GoodBad)))
+  
   
 }
 
-goodBadProp(x, 0.4)
+z <- goodBadProp(x, 0.1)
 
 ## Zadanie 2 ###
 http://datatable.r-forge.r-project.org/datatable-intro.pdf
