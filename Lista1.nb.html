@@ -175,44 +175,41 @@ $(document).ready(function () {
 <!-- rnb-text-begin -->
 <div id="zadanie-1" class="section level2">
 <h2>Zadanie 1</h2>
-<p>Stwórz strukturę danych x = data.table(U = runif(10)). Następnie napisz funkcję goodBadProp, która przyjmuje jako argumenty strukturę tab (data.table) oraz liczbę p z przedziału (0, 1). W ciele funkcji wykonaj operacje:</p>
+<p>Stwórz strukturę danych <code>x &lt;- data.table(U = runif(10))</code> . Następnie napisz funkcję <code>goodBadProp</code>, która przyjmuje jako argumenty strukturę <code>tab</code> (data.table) oraz liczbę <strong>p</strong> z przedziału (0, 1). W ciele funkcji wykonaj operacje:</p>
 <ul>
-<li>dodaj do struktury tab kolumnę GoodBad, która przyjmuje wartości 1, gdy U &gt; p, a 0 w przeciwnym przypadku,</li>
-<li>jako wynik funkcji zwróć strukturę data.table z wyliczonymi częstościami goodów i badów.</li>
-<li>zadbaj o to, by kod funkcji nie zależał od wprost od U (nazwy kolumny w x)</li>
+<li>dodaj do struktury <code>tab</code> kolumnę <code>GoodBad</code>, która przyjmuje wartości <strong>1</strong>, gdy <strong>U &gt; p</strong>, a <strong>0</strong> w przeciwnym przypadku,</li>
+<li>jako wynik funkcji zwróć strukturę <code>data.table</code> z wyliczonymi częstościami goodów i badów.</li>
+<li>zadbaj o to, by kod funkcji nie zależał od wprost od <strong>U</strong> (nazwy kolumny w x)</li>
 </ul>
 </div>
 <div id="zadanie-2" class="section level2">
 <h2>Zadanie 2</h2>
-<p>Stwórz tabelę o nazwie rndNumbers (klasa data.table) o 100k wierszach i kolumnach:</p>
+<p>Stwórz tabelę o nazwie <code>rndNumbers</code> (klasa <code>data.table</code>) o 100k wierszach i kolumnach:</p>
 <ul>
-<li>U z wartościami rozkładu jednostajnego na (0, 1)</li>
-<li>Z z wartościami rozkładu normalnego</li>
-<li>E z wartościami rozkaldu eksponencjalnego</li>
-<li>G z wartościami 0, 1</li>
-<li>P z wartościami z rozkładu Poissona o średniej 2</li>
+<li><strong>U</strong> z wartościami rozkładu jednostajnego na (0, 1)</li>
+<li><strong>Z</strong> z wartościami rozkładu normalnego</li>
+<li><strong>E</strong> z wartościami rozkaldu eksponencjalnego</li>
+<li><strong>G</strong> z wartościami 0, 1</li>
+<li><strong>P</strong> z wartościami z rozkładu Poissona o średniej 2</li>
 </ul>
-<p>Wyznacz (korzystając z funckjonalności data.table) statystyki opisowe wybranych 2 kolumn. Wyznacz (korzystając z funckjonalności data.table) statystyki opisowe kolumn U, Z, E w rozbiciu względem kolumny G. Wyznacz (korzystając z funckjonalności data.table) statystyki opisowe kolumn U, Z, E w rozbiciu względem czy P jest większe od swojej śedniej.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGxvdChjYXJzKVxuYGBgIn0= -->
-<pre class="r"><code>plot(cars)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
+<p>Wyznacz (korzystając z funckjonalności <code>data.table</code>) statystyki opisowe wybranych 2 kolumn. Wyznacz (korzystając z funckjonalności <code>data.table</code>) statystyki opisowe kolumn <strong>U, Z, E</strong> w rozbiciu względem kolumny <strong>G</strong>. Wyznacz (korzystając z funckjonalności <code>data.table</code>) statystyki opisowe kolumn <strong>U, Z, E</strong> w rozbiciu względem czy <strong>P</strong> jest większe od swojej śedniej.</p>
 </div>
 <div id="zadanie-3" class="section level2">
 <h2>Zadanie 3</h2>
-<p>Do tabeli rndNumbers z zadania 2 dodaj kolumnę Id przypisując do niej “.I”. Stwórz tabelę rndNumbers2 jako podzbiór tabeli rndNumbers dla Id &lt;= 10. Stwórz tabelę tab (10 wierszy) z kolumnami:</p>
+<p>Do tabeli <code>rndNumbers</code> z zadania 2 dodaj kolumnę <strong>Id</strong> przypisując do niej <code>.I</code>. Stwórz tabelę <code>rndNumbers2</code> jako podzbiór tabeli <code>rndNumbers</code> dla <strong>Id &lt;= 10</strong>. Stwórz tabelę <code>tab</code> (10 wierszy) z kolumnami:</p>
 <ul>
-<li>Id o wartościach ze zbioru 1, 2, 3 przypisanymi losowo</li>
-<li>Id2 o wartościach ze zbioru 6, 7, 8 przypisanymi losowo</li>
+<li><strong>Id</strong> o wartościach z wektora <code>c(1, 2, 3)</code> przypisanymi losowo</li>
+<li><strong>Id2</strong> o wartościach z wektora <code>c(6, 7, 8)</code> przypisanymi losowo</li>
 </ul>
-<p>Nałóż klucz Id na tabelę rndNumbers2. Nałóż klucz Id na tabelę tab. Wykonaj joiny tabel tab i rndNumbers2 w różnej kolejności (np. tab[rndNumbers2], lub rndNumbers2[tab]). Co otrzymujesz w wyniku (po jakiej kolumnie wykonywany jest join; wymuś joina po drugiej kolumnie)? Do czego służą parametry nomatch, allow.cartesian?</p>
+<p>Nałóż klucz Id na tabelę <code>rndNumbers2</code>. Nałóż klucz Id na tabelę <code>tab</code>. Wykonaj joiny tabel <code>tab</code> i <code>rndNumbers2</code> w różnej kolejności (np. <code>tab[rndNumbers2]</code>, lub <code>rndNumbers2[tab]</code>). Co otrzymujesz w wyniku (po jakiej kolumnie wykonywany jest join; wymuś joina po drugiej kolumnie)? Do czego służą parametry <code>nomatch</code>, <code>allow.cartesian</code>?</p>
+</div>
+<div id="zadanie-4" class="section level2">
+<h2>Zadanie 4</h2>
+<p>Stwórzcie <code>data.table</code> x o 1mln wierszy i dwóch kolumnach z liczbami z rozkładu jendostajnego i normalnego. Zapiszcie tabelę x do pliku csv. Zweryfikujcie czas zapisu przy użyciu standardowych funkcji zapisu do csv np. <code>write.table</code>, <code>write.csv</code> oraz <code>fwrite</code> (data.table). Wczytajcie utworzony plik używając funckji <code>read.table</code> oraz <code>fread</code> porównując czas wczytywania danych. Zwróćcie uwagę na ilość zajmowanego miejsca przez zmienną w R oraz wielkość pliku csv.</p>
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkxhYm9yYXRvcml1bSAxLiBMaXN0YSB6YWRhxYQiDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQojIyBaYWRhbmllIDENCg0KU3R3w7NyeiBzdHJ1a3R1csSZIGRhbnljaCB4ID0gZGF0YS50YWJsZShVID0gcnVuaWYoMTApKS4gTmFzdMSZcG5pZSBuYXBpc3ogZnVua2NqxJkgZ29vZEJhZFByb3AsIGt0w7NyYSBwcnp5am11amUgamFrbyBhcmd1bWVudHkgc3RydWt0dXLEmSB0YWIgKGRhdGEudGFibGUpIG9yYXogbGljemLEmSBwIHogcHJ6ZWR6aWHFgnUgKDAsIDEpLiBXIGNpZWxlIGZ1bmtjamkgd3lrb25haiBvcGVyYWNqZToNCg0KLSBkb2RhaiBkbyBzdHJ1a3R1cnkgdGFiIGtvbHVtbsSZIEdvb2RCYWQsIGt0w7NyYSBwcnp5am11amUgd2FydG/Fm2NpIDEsIGdkeSBVID4gcCwgDQphIDAgdyBwcnplY2l3bnltIHByenlwYWRrdSwNCi0gamFrbyB3eW5payBmdW5rY2ppIHp3csOzxIcgc3RydWt0dXLEmSBkYXRhLnRhYmxlIHogd3lsaWN6b255bWkgY3rEmXN0b8WbY2lhbWkNCmdvb2TDs3cgaSBiYWTDs3cuDQotIHphZGJhaiBvIHRvLCBieSBrb2QgZnVua2NqaSBuaWUgemFsZcW8YcWCIG9kIHdwcm9zdCBvZCBVIChuYXp3eSBrb2x1bW55IHcgeCkNCg0KIyMgWmFkYW5pZSAyDQoNClN0d8OzcnogdGFiZWzEmSBvIG5hendpZSBybmROdW1iZXJzIChrbGFzYSBkYXRhLnRhYmxlKSBvIDEwMGsgd2llcnN6YWNoIGkga29sdW1uYWNoOg0KDQotIFUgeiB3YXJ0b8WbY2lhbWkgcm96a8WCYWR1IGplZG5vc3Rham5lZ28gbmEgKDAsIDEpDQotIFogeiB3YXJ0b8WbY2lhbWkgcm96a8WCYWR1IG5vcm1hbG5lZ28NCi0gRSB6IHdhcnRvxZtjaWFtaSByb3prYWxkdSBla3Nwb25lbmNqYWxuZWdvDQotIEcgeiB3YXJ0b8WbY2lhbWkgMCwgMQ0KLSBQIHogd2FydG/Fm2NpYW1pIHogcm96a8WCYWR1IFBvaXNzb25hIG8gxZtyZWRuaWVqIDINCg0KV3l6bmFjeiAoa29yenlzdGFqxIVjIHogZnVuY2tqb25hbG5vxZtjaSBkYXRhLnRhYmxlKSBzdGF0eXN0eWtpIG9waXNvd2Ugd3licmFueWNoIDIga29sdW1uLg0KV3l6bmFjeiAoa29yenlzdGFqxIVjIHogZnVuY2tqb25hbG5vxZtjaSBkYXRhLnRhYmxlKSBzdGF0eXN0eWtpIG9waXNvd2Uga29sdW1uIFUsIFosIEUgdyByb3piaWNpdSB3emdsxJlkZW0ga29sdW1ueSBHLg0KV3l6bmFjeiAoa29yenlzdGFqxIVjIHogZnVuY2tqb25hbG5vxZtjaSBkYXRhLnRhYmxlKSBzdGF0eXN0eWtpIG9waXNvd2Uga29sdW1uIFUsIFosIEUgdyByb3piaWNpdSB3emdsxJlkZW0gY3p5IFAgamVzdCB3acSZa3N6ZSBvZCBzd29qZWogxZtlZG5pZWouDQoNCmBgYHtyfQ0KcGxvdChjYXJzKQ0KYGBgDQoNCg0KIyMgWmFkYW5pZSAzDQoNCkRvIHRhYmVsaSBybmROdW1iZXJzIHogemFkYW5pYSAyIGRvZGFqIGtvbHVtbsSZIElkIHByenlwaXN1asSFYyBkbyBuaWVqICIuSSIuDQpTdHfDs3J6IHRhYmVsxJkgcm5kTnVtYmVyczIgamFrbyBwb2R6YmnDs3IgdGFiZWxpIHJuZE51bWJlcnMgZGxhIElkIDw9IDEwLg0KU3R3w7NyeiB0YWJlbMSZIHRhYiAoMTAgd2llcnN6eSkgeiBrb2x1bW5hbWk6DQoNCi0gSWQgbyB3YXJ0b8WbY2lhY2ggemUgemJpb3J1IDEsIDIsIDMgcHJ6eXBpc2FueW1pIGxvc293bw0KLSBJZDIgbyB3YXJ0b8WbY2lhY2ggemUgemJpb3J1IDYsIDcsIDggcHJ6eXBpc2FueW1pIGxvc293bw0KDQpOYcWCw7PFvCBrbHVjeiBJZCBuYSB0YWJlbMSZIHJuZE51bWJlcnMyLiBOYcWCw7PFvCBrbHVjeiBJZCBuYSB0YWJlbMSZIHRhYi4NCld5a29uYWogam9pbnkgdGFiZWwgdGFiIGkgcm5kTnVtYmVyczIgdyByw7PFvG5laiBrb2xlam5vxZtjaSAobnAuIHRhYltybmROdW1iZXJzMl0sIGx1YiBybmROdW1iZXJzMlt0YWJdKS4gDQpDbyBvdHJ6eW11amVzeiB3IHd5bmlrdSAocG8gamFraWVqIGtvbHVtbmllIHd5a29ueXdhbnkgamVzdCBqb2luOyB3eW11xZsgam9pbmEgcG8gZHJ1Z2llaiBrb2x1bW5pZSk/IA0KRG8gY3plZ28gc8WCdcW8xIUgcGFyYW1ldHJ5IG5vbWF0Y2gsIGFsbG93LmNhcnRlc2lhbj8NCg0KDQoNCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkxhYm9yYXRvcml1bSAxLiBMaXN0YSB6YWRhxYQiDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQojIyBaYWRhbmllIDENCg0KU3R3w7NyeiBzdHJ1a3R1csSZIGRhbnljaCBgeCA8LSBkYXRhLnRhYmxlKFUgPSBydW5pZigxMCkpYCAuIE5hc3TEmXBuaWUgbmFwaXN6IGZ1bmtjasSZIGBnb29kQmFkUHJvcGAsIGt0w7NyYSBwcnp5am11amUgamFrbyBhcmd1bWVudHkgc3RydWt0dXLEmSBgdGFiYCAoZGF0YS50YWJsZSkgb3JheiBsaWN6YsSZICoqcCoqIHogcHJ6ZWR6aWHFgnUgKDAsIDEpLiBXIGNpZWxlIGZ1bmtjamkgd3lrb25haiBvcGVyYWNqZToNCg0KLSBkb2RhaiBkbyBzdHJ1a3R1cnkgYHRhYmAga29sdW1uxJkgYEdvb2RCYWRgLCBrdMOzcmEgcHJ6eWptdWplIHdhcnRvxZtjaSAqKjEqKiwgZ2R5ICoqVSA+IHAqKiwgDQphICoqMCoqIHcgcHJ6ZWNpd255bSBwcnp5cGFka3UsDQotIGpha28gd3luaWsgZnVua2NqaSB6d3LDs8SHIHN0cnVrdHVyxJkgYGRhdGEudGFibGVgIHogd3lsaWN6b255bWkgY3rEmXN0b8WbY2lhbWkNCmdvb2TDs3cgaSBiYWTDs3cuDQotIHphZGJhaiBvIHRvLCBieSBrb2QgZnVua2NqaSBuaWUgemFsZcW8YcWCIG9kIHdwcm9zdCBvZCAqKlUqKiAobmF6d3kga29sdW1ueSB3IHgpDQoNCiMjIFphZGFuaWUgMg0KDQpTdHfDs3J6IHRhYmVsxJkgbyBuYXp3aWUgYHJuZE51bWJlcnNgIChrbGFzYSBgZGF0YS50YWJsZWApIG8gMTAwayB3aWVyc3phY2ggaSBrb2x1bW5hY2g6DQoNCi0gKipVKiogeiB3YXJ0b8WbY2lhbWkgcm96a8WCYWR1IGplZG5vc3Rham5lZ28gbmEgKDAsIDEpDQotICoqWioqIHogd2FydG/Fm2NpYW1pIHJvemvFgmFkdSBub3JtYWxuZWdvDQotICoqRSoqIHogd2FydG/Fm2NpYW1pIHJvemthbGR1IGVrc3BvbmVuY2phbG5lZ28NCi0gKipHKiogeiB3YXJ0b8WbY2lhbWkgMCwgMQ0KLSAqKlAqKiB6IHdhcnRvxZtjaWFtaSB6IHJvemvFgmFkdSBQb2lzc29uYSBvIMWbcmVkbmllaiAyDQoNCld5em5hY3ogKGtvcnp5c3RhasSFYyB6IGZ1bmNram9uYWxub8WbY2kgYGRhdGEudGFibGVgKSBzdGF0eXN0eWtpIG9waXNvd2Ugd3licmFueWNoIDIga29sdW1uLg0KV3l6bmFjeiAoa29yenlzdGFqxIVjIHogZnVuY2tqb25hbG5vxZtjaSBgZGF0YS50YWJsZWApIHN0YXR5c3R5a2kgb3Bpc293ZSBrb2x1bW4gKipVLCBaLCBFKiogdyByb3piaWNpdSB3emdsxJlkZW0ga29sdW1ueSAqKkcqKi4NCld5em5hY3ogKGtvcnp5c3RhasSFYyB6IGZ1bmNram9uYWxub8WbY2kgYGRhdGEudGFibGVgKSBzdGF0eXN0eWtpIG9waXNvd2Uga29sdW1uICoqVSwgWiwgRSoqIHcgcm96YmljaXUgd3pnbMSZZGVtIGN6eSAqKlAqKiBqZXN0IHdpxJlrc3plIG9kIHN3b2plaiDFm2Vkbmllai4NCg0KIyMgWmFkYW5pZSAzDQoNCkRvIHRhYmVsaSBgcm5kTnVtYmVyc2AgeiB6YWRhbmlhIDIgZG9kYWoga29sdW1uxJkgKipJZCoqIHByenlwaXN1asSFYyBkbyBuaWVqIGAuSWAuDQpTdHfDs3J6IHRhYmVsxJkgYHJuZE51bWJlcnMyYCBqYWtvIHBvZHpiacOzciB0YWJlbGkgYHJuZE51bWJlcnNgIGRsYSAqKklkIDw9IDEwKiouDQpTdHfDs3J6IHRhYmVsxJkgYHRhYmAgKDEwIHdpZXJzenkpIHoga29sdW1uYW1pOg0KDQotICoqSWQqKiBvIHdhcnRvxZtjaWFjaCB6IHdla3RvcmEgYGMoMSwgMiwgMylgIHByenlwaXNhbnltaSBsb3Nvd28NCi0gKipJZDIqKiBvIHdhcnRvxZtjaWFjaCB6IHdla3RvcmEgYGMoNiwgNywgOClgIHByenlwaXNhbnltaSBsb3Nvd28NCg0KTmHFgsOzxbwga2x1Y3ogSWQgbmEgdGFiZWzEmSBgcm5kTnVtYmVyczJgLiBOYcWCw7PFvCBrbHVjeiBJZCBuYSB0YWJlbMSZIGB0YWJgLg0KV3lrb25haiBqb2lueSB0YWJlbCBgdGFiYCBpIGBybmROdW1iZXJzMmAgdyByw7PFvG5laiBrb2xlam5vxZtjaSAobnAuIGB0YWJbcm5kTnVtYmVyczJdYCwgbHViIGBybmROdW1iZXJzMlt0YWJdYCkuIA0KQ28gb3RyenltdWplc3ogdyB3eW5pa3UgKHBvIGpha2llaiBrb2x1bW5pZSB3eWtvbnl3YW55IGplc3Qgam9pbjsgd3ltdcWbIGpvaW5hIHBvIGRydWdpZWoga29sdW1uaWUpPyANCkRvIGN6ZWdvIHPFgnXFvMSFIHBhcmFtZXRyeSBgbm9tYXRjaGAsIGBhbGxvdy5jYXJ0ZXNpYW5gPw0KDQojIyBaYWRhbmllIDQNCg0KU3R3w7NyemNpZSBgZGF0YS50YWJsZWAgeCBvIDFtbG4gd2llcnN6eSBpIGR3w7NjaCBrb2x1bW5hY2ggeiBsaWN6YmFtaSB6IHJvemvFgmFkdSAgamVuZG9zdGFqbmVnbyBpIG5vcm1hbG5lZ28uIFphcGlzemNpZSB0YWJlbMSZIHggZG8gcGxpa3UgY3N2LiBad2VyeWZpa3VqY2llIGN6YXMgemFwaXN1IHByenkgdcW8eWNpdSBzdGFuZGFyZG93eWNoIGZ1bmtjamkgemFwaXN1IGRvIGNzdiBucC4gYHdyaXRlLnRhYmxlYCwgYHdyaXRlLmNzdmAgb3JheiBgZndyaXRlYCAoZGF0YS50YWJsZSkuIA0KV2N6eXRhamNpZSB1dHdvcnpvbnkgcGxpayB1xbx5d2FqxIVjIGZ1bmNramkgYHJlYWQudGFibGVgIG9yYXogYGZyZWFkYCBwb3LDs3dudWrEhWMgY3phcyB3Y3p5dHl3YW5pYSBkYW55Y2guDQpad3LDs8SHY2llIHV3YWfEmSBuYSBpbG/Fm8SHIHpham1vd2FuZWdvIG1pZWpzY2EgcHJ6ZXogem1pZW5uxIUgdyBSIG9yYXogd2llbGtvxZvEhyBwbGlrdSBjc3YuDQoNCg0KDQoNCg0K</div>
 
 
 
