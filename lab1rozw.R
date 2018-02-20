@@ -26,7 +26,6 @@ goodBadProp <- function(tab, p){
   #return(tab[, mean(.GoodBad), by = GoodBad])
   prop.table(table(tab$GoodBad))
   
-  
 }
 
 z <- goodBadProp(x, 0.1)
@@ -128,13 +127,15 @@ rndNumbers2 <- rndNumbers[Id <= 10]
 tab <- data.table(Id = sample(c(1:3), 10, replace = TRUE),
                   Id2 = sample(c(6:8), 10, replace = TRUE))
 
-setDT(rndNumbers2, key = c("Id"))
-setDT(tab, key = c("Id"))
+setkey(rndNumbers2, Id)
+setkey(tab, Id2)
 
-tab[rndNumbers2,]
+tab[rndNumbers2]
+tab[rndNumbers2, nomatch=0]
+
+tab[rndNumbers2]
 rndNumbers2[tab]
 
-rndNumbers2[tab]
 
 
 
@@ -154,9 +155,6 @@ rndNumbers2[tab]
 
 
 
-
-
-
 x <- data.table(z = rnorm(10^6), u = runif(10^6))
 y <- data.frame(z = rnorm(10^6), u = runif(10^6))
 
@@ -165,11 +163,12 @@ system.time(write.table(x, "x.csv"))
 system.time(fwrite(x, "y.csv"))
 
 
-
 system.time(read.csv("x.csv"))
 system.time(read.table("x.csv"))
 system.time(fread("y.csv"))
 
+object.size(x)
+object.size("x.csv")
 
 
 
