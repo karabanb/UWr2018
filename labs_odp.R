@@ -64,12 +64,12 @@ mo¿na to zrobiæ bez dodawania nowych kolumn, wyliczania "na boku" œredniej P?
 
 ### rozwiazanie ###
 
-n <- 100000
+n <- 10^5
 
 rndNumbers <- data.table(U = runif(n),
                          Z = rnorm(n),
                          E = rexp(n),
-                         G = rbinom(n, 1, 0.6),
+                         G = rbinom(n, 1, 0.5),
                          P = rpois(n, 2)
                          )
 
