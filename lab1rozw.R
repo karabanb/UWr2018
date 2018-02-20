@@ -131,10 +131,13 @@ tab <- data.table(Id = sample(c(1:3), 10, replace = TRUE),
 setDT(rndNumbers2, key = c("Id"))
 setDT(tab, key = c("Id"))
 
-tab[rndNumbers2,]
-rndNumbers2[tab]
+tab[rndNumbers2]
+tab[rndNumbers2, nomatch=0]
 
 rndNumbers2[tab]
+rndNumbers2[tab, on = .(Id, Id2),nomatch=0]
+
+CJ[tab,rndNumbers2]
 
 
 
