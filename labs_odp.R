@@ -1,20 +1,20 @@
-Uwaga: W zadaniach moÅ¼na wybieraÄ‡ losowe podzbiory spraw (tak jak na wykÅ‚adzie),
-by czas obliczeÅ„ nie przekraczaÅ‚ czasu zajÄ™Ä‡. Warto jednak zweryfikowaÄ‡ czas 
-obliczeÅ„, by mieÄ‡ Å›wiadomoÅ›Ä‡ ile czasu bÄ™dÄ… wykonywaÄ‡ siÄ™ obliczenia do 
+Uwaga: W zadaniach mo¿na wybieraæ losowe podzbiory spraw (tak jak na wyk³adzie),
+by czas obliczeñ nie przekracza³ czasu zajêæ. Warto jednak zweryfikowaæ czas 
+obliczeñ, by mieæ œwiadomoœæ ile czasu bêd¹ wykonywaæ siê obliczenia do 
 wykonania projektu.
 
 ## ! lab 1 ######
 ### Zadanie 1 ###
-StwÃ³rz strukturÄ™ danych x = data.table(U=runif(10)). NastÄ™pnie napisz funkcjÄ™ 
-goodBadProp, ktÃ³ra przyjmuje jako argumenty strukturÄ™ tab (data.table) oraz 
-liczbÄ™ p z przedziaÅ‚u (0, 1). W ciele funkcji wykonaj operacjÄ™
-- dodaj do struktury tab kolumnÄ™ GoodBad, ktÃ³ra przyjmuje wartoÅ›ci 1, gdy U > p, 
+Stwórz strukturê danych x = data.table(U=runif(10)). Nastêpnie napisz funkcjê 
+goodBadProp, która przyjmuje jako argumenty strukturê tab (data.table) oraz 
+liczbê p z przedzia³u (0, 1). W ciele funkcji wykonaj operacjê
+- dodaj do struktury tab kolumnê GoodBad, która przyjmuje wartoœci 1, gdy U > p, 
   a 0 w przeciwnym przypadku,
-- jako wynik funkcji zwrÃ³Ä‡ strukturÄ™ data.table z wyliczonymi czÄ™stoÅ›ciami
-  goodÃ³w i badÃ³w.
-Jak wyglÄ…da struktura danyh x po uruchomieniu funkcji? JeÅ›li inaczej niÅ¼ 
-pierwotnie, to czy moÅ¼na tego uniknÄ…Ä‡?
-Sparametryzuj funkcjÄ™, by jej kod nie zaleÅ¼aÅ‚ od wprost od U (nazwy kolumny 
+- jako wynik funkcji zwróæ strukturê data.table z wyliczonymi czêstoœciami
+  goodów i badów.
+Jak wygl¹da struktura danyh x po uruchomieniu funkcji? Jeœli inaczej ni¿ 
+pierwotnie, to czy mo¿na tego unikn¹æ?
+Sparametryzuj funkcjê, by jej kod nie zale¿a³ od wprost od U (nazwy kolumny 
 w x). 
 
 ### rozwiazanie ###
@@ -28,35 +28,39 @@ goodBadProp <- function(tab, p){
   
   tab$GoodBad <- ifelse(tab[, 1] > p, 1, 0)
   #return(tab[, mean(.GoodBad), by = GoodBad])
-  #as.data.table(prop.table(table(tab$GoodBad)))
+  prop.table(table(tab$GoodBad))
   
   
 }
 
 z <- goodBadProp(x, 0.1)
+z
+class(z)
+
+
 
 ## Zadanie 2 ###
 http://datatable.r-forge.r-project.org/datatable-intro.pdf
-W materiale z powyÅ¼szego linku moÅ¼na znaleÅºÄ‡ przykÅ‚ady wykorzystania data.table
-wraz z czasami wykonania pewnych poleceÅ„. Wykonajcie te przykÅ‚ady zwracajÄ…c 
-uwagÄ™ na moÅ¼liwoÅ›Ä‡i data.table (Uwaga: W zaleÅ¼noÅ›ci od komputera mogÄ… wystÄ…piÄ‡
-trudnoÅ›ci z pomiarem czasu wykonania poprzez system.time. Polecam pakiet 
+W materiale z powy¿szego linku mo¿na znaleŸæ przyk³ady wykorzystania data.table
+wraz z czasami wykonania pewnych poleceñ. Wykonajcie te przyk³ady zwracaj¹c 
+uwagê na mo¿liwoœæi data.table (Uwaga: W zale¿noœci od komputera mog¹ wyst¹piæ
+trudnoœci z pomiarem czasu wykonania poprzez system.time. Polecam pakiet 
 microbenchmark). 
                                                            
 # Zadanie 3
-StwÃ³rz tabelÄ™ rndNumbers data.table o 100k wierszach i kolumnach 
-- U z wartoÅ›ciami rozkÅ‚adu jednostajnego na (0, 1)
-- Z z wartoÅ›ciami rozkÅ‚adu normalnego 
-- E z wartoÅ›ciami rozkaldu eksponencjalnego
-- G z wartoÅ›ciami 0, 1 
-- P z wartoÅ›ciami z rozkÅ‚adu Poissona o Å›redniej 2
-Wyznacz (korzystajÄ…c z funckjonalnoÅ›ci data.table) statystyki opisowe 
-poszczegÃ³lnych kolumn. 
-Wyznacz (korzystajÄ…c z funckjonalnoÅ›ci data.table) statystyki opisowe 
-kolumn U, Z, E w rozbiciu wzglÄ™dem kolumny G. 
-Wyznacz (korzystajÄ…c z funckjonalnoÅ›ci data.table) statystyki opisowe 
-kolumn U, Z, E w rozbiciu wzglÄ™dem czy P jest wiÄ™ksze od swojej Å›edniej. Czy
-moÅ¼na to zrobiÄ‡ bez dodawania nowych kolumn, wyliczania "na boku" Å›redniej P?
+Stwórz tabelê rndNumbers data.table o 100k wierszach i kolumnach 
+- U z wartoœciami rozk³adu jednostajnego na (0, 1)
+- Z z wartoœciami rozk³adu normalnego 
+- E z wartoœciami rozkaldu eksponencjalnego
+- G z wartoœciami 0, 1 
+- P z wartoœciami z rozk³adu Poissona o œredniej 2
+Wyznacz (korzystaj¹c z funckjonalnoœci data.table) statystyki opisowe 
+poszczególnych kolumn. 
+Wyznacz (korzystaj¹c z funckjonalnoœci data.table) statystyki opisowe 
+kolumn U, Z, E w rozbiciu wzglêdem kolumny G. 
+Wyznacz (korzystaj¹c z funckjonalnoœci data.table) statystyki opisowe 
+kolumn U, Z, E w rozbiciu wzglêdem czy P jest wiêksze od swojej œedniej. Czy
+mo¿na to zrobiæ bez dodawania nowych kolumn, wyliczania "na boku" œredniej P?
 
 ### rozwiazanie ###
 
@@ -72,182 +76,200 @@ rndNumbers <- data.table(U = runif(n),
 summary(rndNumbers)
 
 
+
+
 # Zadanie 4
-Do tabeli rndNumbers z zadania 3 dodaj kolumnÄ™ Id przypisujÄ…c do niej ".I".
-StwÃ³rz tabelÄ™ rndNumbers2 jako podzbiÃ³r tabeli rndNumbers dla Id <= 10.
-StwÃ³rz tabelÄ™ tab (10 wierszy) z kolumnami
-- Id o wartoÅ›ciach ze zbioru 1, 2, 3 przypisanymi losowo
-- Id2 o wartoÅ›ciach ze zbioru 6, 7, 8 przypisanymi losowo
-NaÅ‚Ã³Å¼ klucz Id na tabelÄ™ rndNumbers2. NaÅ‚Ã³Å¼ klucz Id na tabelÄ™ tab.
-Wykonaj joiny tabel tab i rndNumbers w rÃ³Å¼nej kolejnoÅ›ci (np. tab[rndNumbers2], 
+Do tabeli rndNumbers z zadania 3 dodaj kolumnê Id przypisuj¹c do niej ".I".
+Stwórz tabelê rndNumbers2 jako podzbiór tabeli rndNumbers dla Id <= 10.
+Stwórz tabelê tab (10 wierszy) z kolumnami
+- Id o wartoœciach ze zbioru 1, 2, 3 przypisanymi losowo
+- Id2 o wartoœciach ze zbioru 6, 7, 8 przypisanymi losowo
+Na³ó¿ klucz Id na tabelê rndNumbers2. Na³ó¿ klucz Id na tabelê tab.
+Wykonaj joiny tabel tab i rndNumbers2 w ró¿nej kolejnoœci (np. tab[rndNumbers2], 
 lub rndNumbers2[tab]). Co otrzymujesz w wyniku (po jakiej kolumnie wykonywany
-jest join; wymuÅ› joina po drugiej kolumnie)? Do czego sÅ‚uÅ¼Ä… parametry 
+jest join; wymuœ joina po drugiej kolumnie)? Do czego s³u¿¹ parametry 
 nomatch, allow.cartesian?
+
+  
+rndNumbers[, Id:= .I]
+
+rndNumbers2 <- rndNumbers[Id <= 10]
+
+tab <- data.table(Id = sample(c(1:3), 10, replace = TRUE),
+                  Id2 = sample(c(6:8), 10, replace = TRUE))
+
+setDT(rndNumbers2, key = c("Id"))
+setDT(tab, key = c("Id"))
+
+tab[rndNumbers2]
+rndNumbers2[tab]
+
+
 
 # Zadanie 5
 get, quote, eval
 
 
 # Zadanie 6
-StwÃ³rzcie data.table x o 1mln wierszy i dwÃ³ch kolumnach z liczbami z rozkÅ‚adu 
-jendostajnego i normalnego. Zapiszcie tabelÄ™ x do pliku csv. Zweryfikujcie czas
-zapisu przy uÅ¼yciu funkcji standardowych funkcji zapisu do csv np. write.table,
+Stwórzcie data.table x o 1mln wierszy i dwóch kolumnach z liczbami z rozk³adu 
+jendostajnego i normalnego. Zapiszcie tabelê x do pliku csv. Zweryfikujcie czas
+zapisu przy u¿yciu funkcji standardowych funkcji zapisu do csv np. write.table,
 write.csv oraz fwrite (data.table). 
-Wczytajcie utworzony plik uzywajÄ…c funckji read.table oraz fread porÃ³wnujÄ…c czas 
+Wczytajcie utworzony plik uzywaj¹c funckji read.table oraz fread porównuj¹c czas 
 wczytywania danych.
-ZwrÃ³Ä‡cie uwagÄ™ na iloÅ›Ä‡ zajmowanego miejsca przez zmiennÄ… w R oraz wielkoÅ›Ä‡ 
+Zwróæcie uwagê na iloœæ zajmowanego miejsca przez zmienn¹ w R oraz wielkoœæ 
 pliku csv.
 
 #! lab 2
 # Zadanie 1
-Wyznacz skutecznoÅ›Ä‡ (suma wpÅ‚at przez wartoÅ›Ä‡ zadÅ‚uÅ¼enia) w rÃ³Å¼nych horyzontach
+Wyznacz skutecznoœæ (suma wp³at przez wartoœæ zad³u¿enia) w ró¿nych horyzontach
 czasu (np. 3M, 6M, 12M) i wyznacz jej statystyki opisowe (kwantyle) 
 w podziale na:  
 - Gender
 - ExtrernalAgency
 - Bailiff
 - ClosedExecution
-- M_LastPaymentToImportDate (zaproponuj podziaÅ‚ wg tej zmiennej)
-- DPD (zaproponuj podziaÅ‚ wg tej zmiennej)
-- Age (zaproponuj podziaÅ‚ wg tej zmiennej)
-- TOA (zaproponuj podziaÅ‚ wg tej zmiennej)
-Wyniki zaprezentuj rÃ³wnieÅ¼ na wykresie. KtÃ³re zmienne najlepiej rÃ³Å¼nicujÄ… 
-skutecznoÅ›Ä‡ (co rozumiesz poprzez "rÃ³Å¼nicujÄ…")?
-Wyznacz korelacje pomiÄ™dzy zmiennÄ… skutecznoÅ›ci a wskazanymi zmiennymi. Czy
-w zbiorze danych istniejÄ… inne zmienne (od wskazanych) z duÅ¼Ä… wartoÅ›ciÄ… 
+- M_LastPaymentToImportDate (zaproponuj podzia³ wg tej zmiennej)
+- DPD (zaproponuj podzia³ wg tej zmiennej)
+- Age (zaproponuj podzia³ wg tej zmiennej)
+- TOA (zaproponuj podzia³ wg tej zmiennej)
+Wyniki zaprezentuj równie¿ na wykresie. Które zmienne najlepiej ró¿nicuj¹ 
+skutecznoœæ (co rozumiesz poprzez "ró¿nicuj¹")?
+Wyznacz korelacje pomiêdzy zmienn¹ skutecznoœci a wskazanymi zmiennymi. Czy
+w zbiorze danych istniej¹ inne zmienne (od wskazanych) z du¿¹ wartoœci¹ 
 korelacji.
 
 # Zadanie 2
-Wyznacz dotarcie per sprawa (czy byÅ‚ kontakt w sprawie telefoniczny, 
-lub bezpoÅ›redni/wizyta) w rÃ³Å¼nych horyzontach czasu i wyznacz jej statystyki
+Wyznacz dotarcie per sprawa (czy by³ kontakt w sprawie telefoniczny, 
+lub bezpoœredni/wizyta) w ró¿nych horyzontach czasu i wyznacz jej statystyki
 opisowe (kwantyle) w podziale na wybrane zmienne (np. zmienne z zadania 1, 
-lub zmienne, ktÃ³re rÃ³znicujÄ… dotarcie).
+lub zmienne, które róznicuj¹ dotarcie).
 
 # Zadanie 3
-Czy istnieje zaleÅ¼noÅ›Ä‡ pomiÄ™dzy iloÅ›ciÄ… wykonywanych telefonÃ³w, wizyt, lub 
-wysyÅ‚anych listÃ³w, a zmiennymi opisujÄ…cymi sprawÄ™ (zmienne w cases).
+Czy istnieje zale¿noœæ pomiêdzy iloœci¹ wykonywanych telefonów, wizyt, lub 
+wysy³anych listów, a zmiennymi opisuj¹cymi sprawê (zmienne w cases).
 
 # Zadanie 4
-Dla wybranych zmiennych stwÃ³rz zmienne: 
-- standaryzowane (o Å›redniej zero i warinacji 1) 
-- normalizowane (przeksztaÅ‚cenie wartoÅ›ci zmienn,ej na odcinek [0, 1]). 
+Dla wybranych zmiennych stwórz zmienne: 
+- standaryzowane (o œredniej zero i warinacji 1) 
+- normalizowane (przekszta³cenie wartoœci zmienn,ej na odcinek [0, 1]). 
 - logarytmowane
 - pierwiatskowane 
-Wyznacz korelacjÄ™ dla zmiennych orginalnych oraz korelacjÄ™ ich przeksztaÅ‚conych 
-odpowiednikÃ³w. Co moÅ¼na zauwaÅ¼yÄ‡?
+Wyznacz korelacjê dla zmiennych orginalnych oraz korelacjê ich przekszta³conych 
+odpowiedników. Co mo¿na zauwa¿yæ?
 
 # Zadanie 5
-Dla zadanej zmiennej stwÃ³rz dystrybuantÄ™ empirycznÄ… (funkcja ecdf). NastÄ™pnie 
-stwÃ³rz zmiennÄ… przeksztaÅ‚cajÄ…c jÄ… poprzez jej dystrybuantÄ™ empirycznÄ…. Jakie
+Dla zadanej zmiennej stwórz dystrybuantê empiryczn¹ (funkcja ecdf). Nastêpnie 
+stwórz zmienn¹ przekszta³caj¹c j¹ poprzez jej dystrybuantê empiryczn¹. Jakie
 charakterystyki ma taka zmienna.
 
 # Zadanie 6
-Wyznacz wykres warstwowy pokazujÄ…cy udziaÅ‚ skutecznoÅ›ci w kolejnych miesiÄ…cach 
-obsÅ‚ugi w podziale na:
-1. SR w sprawach bez kontaktu (zarÃ³wno telefoniczny jak i wizyta)
+Wyznacz wykres warstwowy pokazuj¹cy udzia³ skutecznoœci w kolejnych miesi¹cach 
+obs³ugi w podziale na:
+1. SR w sprawach bez kontaktu (zarówno telefoniczny jak i wizyta)
 2. SR w sprawach z kontaktem
-3. SR w sprawach z ugodÄ…
-4. SR w sprawach przekazanych do sÄ…du.
-PowyÅ¼sze zdarzenia narzucajÄ… hierarchiÄ™ procesu, tzn. jeÅ›li sprawa byÅ‚ kontakt 
-w 3M to sprawa ta jest uwaÅ¼ana za sprawÄ™ z kontaktem do 12M (do koÅ„ca).
-JeÅ›li w sprawie byÅ‚ kontakt w 2M oraz w tej sprawie zostaÅ‚a podpisana ugoda 
-w 2M, to zaliczamy tÄ… sprawÄ™ (jej skutecznoÅ›Ä‡) do kategorii spraw z ugodÄ… w 2M.
+3. SR w sprawach z ugod¹
+4. SR w sprawach przekazanych do s¹du.
+Powy¿sze zdarzenia narzucaj¹ hierarchiê procesu, tzn. jeœli sprawa by³ kontakt 
+w 3M to sprawa ta jest uwa¿ana za sprawê z kontaktem do 12M (do koñca).
+Jeœli w sprawie by³ kontakt w 2M oraz w tej sprawie zosta³a podpisana ugoda 
+w 2M, to zaliczamy t¹ sprawê (jej skutecznoœæ) do kategorii spraw z ugod¹ w 2M.
 
 # Zadanie 7
-Wyznacz istotnoÅ›Ä‡ korelacji pomiÄ™dzy parami zmiennych.
+Wyznacz istotnoœæ korelacji pomiêdzy parami zmiennych.
 
 #! lab 3
 # Zadanie 1. 
-Wykonaj twardÄ… klasteryzacjÄ™ (k -Å›rednich, hierarchiczny klastering) danych 
-spraw poÅ¼yczkowych z zadÅ‚uÅ¼eniem do 65k. wykorzystujÄ…c zmienne przed zakupem
-(zmienne ze zbioru cases). Dla uproszczenia brakujÄ…ce dane uzupeÅ‚nij wartoÅ›ciÄ…
-Å›redniÄ…. Zaproponuj rÃ³Å¼ne miary reprezentujÄ…ce: 
-- podobieÅ„stwa spraw w klastrze; 
-- niepodobieÅ„stwa klastrÃ³w ("odlegÅ‚oÅ›Ä‡" miÄ™dzy klastrami).
-Do jakich wyborÃ³w liczby klastrÃ³w k prowadzÄ… te miary?
-Czy jest moÅ¼liwoÅ›Ä‡ wyboru k jako kompromis tych dwÃ³ch podejÅ›Ä‡?
+Wykonaj tward¹ klasteryzacjê (k -œrednich, hierarchiczny klastering) danych 
+spraw po¿yczkowych z zad³u¿eniem do 65k. wykorzystuj¹c zmienne przed zakupem
+(zmienne ze zbioru cases). Dla uproszczenia brakuj¹ce dane uzupe³nij wartoœci¹
+œredni¹. Zaproponuj ró¿ne miary reprezentuj¹ce: 
+- podobieñstwa spraw w klastrze; 
+- niepodobieñstwa klastrów ("odleg³oœæ" miêdzy klastrami).
+Do jakich wyborów liczby klastrów k prowadz¹ te miary?
+Czy jest mo¿liwoœæ wyboru k jako kompromis tych dwóch podejœæ?
 
 # Zadanie 2 
-StwÃ³rz model twardej klasteryzacji spraw poÅ¼yczkowych z zadÅ‚uÅ¼eniem do 65k 
-prognozujÄ…cy "czy sprawa z kontaktem w 3M" na podstawie zmiennych przed zakupem 
-(zmienne ze zbioru cases). KtÃ³re zmienne dajÄ… w wyniku model o najlepszych
-wÅ‚aÅ›ciwoÅ›ciach predykcyjnych? Ile zmiennych naleÅ¼y uÅ¼yÄ‡ do klasteryzacji?
+Stwórz model twardej klasteryzacji spraw po¿yczkowych z zad³u¿eniem do 65k 
+prognozuj¹cy "czy sprawa z kontaktem w 3M" na podstawie zmiennych przed zakupem 
+(zmienne ze zbioru cases). Które zmienne daj¹ w wyniku model o najlepszych
+w³aœciwoœciach predykcyjnych? Ile zmiennych nale¿y u¿yæ do klasteryzacji?
 
 # Zadanie 2 
-StwÃ³rz model miÄ™kkiej klasteryzacji spraw poÅ¼yczkowych z zadÅ‚uÅ¼eniem do 65k 
-prognozujÄ…cy "czy sprawa z wpÅ‚atÄ… w 3M" na podstawie zmiennych przed zakupem 
-(zmienne ze zbioru cases). KtÃ³re zmienne dajÄ… w wyniku model o najlepszych
-wÅ‚aÅ›ciwoÅ›ciach predykcyjnych? Ile zmiennych naleÅ¼y uÅ¼yÄ‡ do klasteryzacji?
+Stwórz model miêkkiej klasteryzacji spraw po¿yczkowych z zad³u¿eniem do 65k 
+prognozuj¹cy "czy sprawa z wp³at¹ w 3M" na podstawie zmiennych przed zakupem 
+(zmienne ze zbioru cases). Które zmienne daj¹ w wyniku model o najlepszych
+w³aœciwoœciach predykcyjnych? Ile zmiennych nale¿y u¿yæ do klasteryzacji?
 
 # Zadanie 4
-StwÃ³rz model twardej klasteryzacji spraw kart kredytowych z zadÅ‚uÅ¼eniem do 65k 
-prognozujÄ…cy wartoÅ›Ä‡ Å›redniej pensji na podstawie zmiennych przed zakupem 
-(zmienne ze zbioru cases). KtÃ³re zmienne dajÄ… w wyniku model o najlepszych
-wÅ‚aÅ›ciwoÅ›ciach predykcyjnych? Ile zmiennych naleÅ¼y uÅ¼yÄ‡ do klasteryzacji?
+Stwórz model twardej klasteryzacji spraw kart kredytowych z zad³u¿eniem do 65k 
+prognozuj¹cy wartoœæ œredniej pensji na podstawie zmiennych przed zakupem 
+(zmienne ze zbioru cases). Które zmienne daj¹ w wyniku model o najlepszych
+w³aœciwoœciach predykcyjnych? Ile zmiennych nale¿y u¿yæ do klasteryzacji?
 
 # Zadanie 5
-StwÃ³rz model miÄ™kkiej klasteryzacji spraw kart kreydtowych z zadÅ‚uÅ¼eniem do 65k 
-prognozujÄ…cy wartoÅ›Ä‡ Å›redniej pensji na podstawie zmiennych przed zakupem  
-(zmienne ze zbioru cases).  KtÃ³re zmienne dajÄ… w wyniku model o najlepszych
-wÅ‚aÅ›ciwoÅ›ciach predykcyjnych? Czy pomocne sÄ… transformacje zmiennych (ktÃ³rym
-"daleko" do normalnoÅ›ci) takie jak logarytm, lub pierwiastek?  
+Stwórz model miêkkiej klasteryzacji spraw kart kreydtowych z zad³u¿eniem do 65k 
+prognozuj¹cy wartoœæ œredniej pensji na podstawie zmiennych przed zakupem  
+(zmienne ze zbioru cases).  Które zmienne daj¹ w wyniku model o najlepszych
+w³aœciwoœciach predykcyjnych? Czy pomocne s¹ transformacje zmiennych (którym
+"daleko" do normalnoœci) takie jak logarytm, lub pierwiastek?  
 
 # Zadanie 6
-Napisz funkcjÄ™/procedurÄ™ wyboru k najbliÅ¼szych sÄ…siadÃ³w (Wsk. Funkcja dist(x)
-zwraca odlegÅ‚oÅ›Ä‡ pomiÄ™dzy punktami w zbiorze x).
-Wykorzystaj tÄ… funkcjÄ™ w problemie regresyjnym prognozowania wartoÅ›ci Å›redniej
-pensji, gdzie wartoÅ›Ä‡ prognozy jest rÃ³wna Å›redniej wartoÅ›ci po sÄ…siadach.
+Napisz funkcjê/procedurê wyboru k najbli¿szych s¹siadów (Wsk. Funkcja dist(x)
+zwraca odleg³oœæ pomiêdzy punktami w zbiorze x).
+Wykorzystaj t¹ funkcjê w problemie regresyjnym prognozowania wartoœci œredniej
+pensji, gdzie wartoœæ prognozy jest równa œredniej wartoœci po s¹siadach.
 
 #! lab 4
 # Zadanie 1 
-Wyznacz bÅ‚Ä™dy MSE metodÄ… cross-validation i k-fold cross validation 
-dla przykÅ‚adu z wykÅ‚adu (przykÅ‚ad z danymi generowanymi). PorÃ³wnaj te wartoÅ›ci 
-z testowym bÅ‚Ä™dem MSE. PowtÃ³rz obliczenia dla rÃ³Å¼nych funkcji "y1" (mniej, 
+Wyznacz b³êdy MSE metod¹ cross-validation i k-fold cross validation 
+dla przyk³adu z wyk³adu (przyk³ad z danymi generowanymi). Porównaj te wartoœci 
+z testowym b³êdem MSE. Powtórz obliczenia dla ró¿nych funkcji "y1" (mniej, 
 lub bardziej "pofalowanych").
 
 # Zadanie 2 
-MajÄ…c do dyspozycji zbiÃ³r spraw kart kredytowych o zadÅ‚uÅ¼eniu do 1000 wyznacz 
-oszacowanie rozkÅ‚adu Å›redniego zadÅ‚uÅ¼enia oraz DPD pakietÃ³w takiego typu.  
+Maj¹c do dyspozycji zbiór spraw kart kredytowych o zad³u¿eniu do 1000 wyznacz 
+oszacowanie rozk³adu œredniego zad³u¿enia oraz DPD pakietów takiego typu.  
 
 # Zadanie 3
-MajÄ…c prÃ³bÄ™ n elementowÄ… oszacuj ile rÃ³Å¼nych obserwacji z tej prÃ³by zawierajÄ… 
-przecietnie poszczegÃ³lne replikacje bootstrapowe. 
+Maj¹c próbê n elementow¹ oszacuj ile ró¿nych obserwacji z tej próby zawieraj¹ 
+przecietnie poszczególne replikacje bootstrapowe. 
 
 # Zadanie 4
-MSE testowe i uczÄ…ce dla knn   ??? co modelowaÄ‡
+MSE testowe i ucz¹ce dla knn   ??? co modelowaæ
 
 # Zadanie 5
-ZaÅ‚Ã³Å¼my, Å¼e sprawa rentowna to taka dla ktÃ³rej suma wpÅ‚at wynosi wiÄ™cej niÅ¼ 200. 
-Dla kaÅ¼dej sprawy wyznacz miesiÄ…c, w ktÃ³rym przekracza ona prÃ³g rentownoÅ›ci. 
-Jak wyglÄ…da rozkÅ‚ad wyznaczonych miesiÄ™cy? Jak wyglÄ…da rozkÅ‚ad skutecznoÅ›ci
-spraw w momencie osiÄ…gniÄ™cia progu rentownoÅ›ci? 
+Za³ó¿my, ¿e sprawa rentowna to taka dla której suma wp³at wynosi wiêcej ni¿ 200. 
+Dla ka¿dej sprawy wyznacz miesi¹c, w którym przekracza ona próg rentownoœci. 
+Jak wygl¹da rozk³ad wyznaczonych miesiêcy? Jak wygl¹da rozk³ad skutecznoœci
+spraw w momencie osi¹gniêcia progu rentownoœci? 
 
 # Zadanie 6
-ZaÅ‚Ã³Å¼my, Å¼e sprawa rentowna to taka dla ktÃ³rej skutecznoÅ›Ä‡ przekroczy 0.5% 
-zadÅ‚uÅ¼enia poczÄ…tkowego. Dla kaÅ¼dej sprawy wyznacz miesiÄ…c, w ktÃ³rym przekracza 
-ona prÃ³g skutecznoÅ›ci. Jak wyglÄ…da rozkÅ‚ad wyznaczonych miesiÄ™cy? Ile pieniÄ™dzy 
-zostaÅ‚o wpÅ‚aconych na poszczegÃ³lnych sprawach - zrÃ³b zestawienie w podziale
-na rÃ³Å¼ne bandy zadÅ‚uÅ¼enia.
+Za³ó¿my, ¿e sprawa rentowna to taka dla której skutecznoœæ przekroczy 0.5% 
+zad³u¿enia pocz¹tkowego. Dla ka¿dej sprawy wyznacz miesi¹c, w którym przekracza 
+ona próg skutecznoœci. Jak wygl¹da rozk³ad wyznaczonych miesiêcy? Ile pieniêdzy 
+zosta³o wp³aconych na poszczególnych sprawach - zrób zestawienie w podziale
+na ró¿ne bandy zad³u¿enia.
 
 #! lab 5
 # Zadanie 1
-Wykonaj samodzielnie (bez uÅ¼ywania dedykowanych pakietÃ³w/funkcji) wykres ROC. 
-WejÅ›ciem bÄ™dzie wektor parwdopodobieÅ„stw i wektor oznaczeÅ„ good/bad.
+Wykonaj samodzielnie (bez u¿ywania dedykowanych pakietów/funkcji) wykres ROC. 
+Wejœciem bêdzie wektor parwdopodobieñstw i wektor oznaczeñ good/bad.
 
 # Zadanie 2 
-Uzyj drzewa klasyfikacyjnego do modelowania zjawiska czy w sprawie pojawi siÄ™ 
-wpÅ‚ata w ciÄ…gu pierwszych 6 miesiÄ™cy obsÅ‚ugi. Zadanie wykonaj wykorzystujÄ…c
+Uzyj drzewa klasyfikacyjnego do modelowania zjawiska czy w sprawie pojawi siê 
+wp³ata w ci¹gu pierwszych 6 miesiêcy obs³ugi. Zadanie wykonaj wykorzystuj¹c
 pakiety tree i rpart.
 
 # Zadanie 3 
-Zbuduj drzewo regresyjne do modelowania skutecznoÅ›ci na sprawie od 4 do 12 
-miesiÄ…ca obsÅ‚ugi (Wsk. MoÅ¼esz wykorzystaÄ‡ zmienne behawioralne z pierwszych
-trzech miesiÄ™cy obsÅ‚ugi). 
+Zbuduj drzewo regresyjne do modelowania skutecznoœci na sprawie od 4 do 12 
+miesi¹ca obs³ugi (Wsk. Mo¿esz wykorzystaæ zmienne behawioralne z pierwszych
+trzech miesiêcy obs³ugi). 
 
 # Zadanie 4
-Zbuduj dwa drzewa na dwÃ³ch poÅ‚owach zbioru uczÄ…cego, a nastÄ™pnie wykonaj 
-weryfikacjÄ™ obu drzew na tym samym zbiorze testowym. Czy zbudowane drzewa sÄ… 
-"jednakowe"? Czy dajÄ… takÄ… samÄ… prognozÄ™?
+Zbuduj dwa drzewa na dwóch po³owach zbioru ucz¹cego, a nastêpnie wykonaj 
+weryfikacjê obu drzew na tym samym zbiorze testowym. Czy zbudowane drzewa s¹ 
+"jednakowe"? Czy daj¹ tak¹ sam¹ prognozê?
 
 # Zadanie 5
 zadanie z boostingu klasyfikacyjne
@@ -258,57 +280,57 @@ zadanie z boostingu regresyjne???
 
 #! lab 6
 # Zadanie 1
-Przeanalizuj wartoÅ›ci NA na zmiennej LoanAmount. Czy wszystkie wartoÅ›ci NA 
-w przypadku tej zmiennej oznaczajÄ… brak danych? 
+Przeanalizuj wartoœci NA na zmiennej LoanAmount. Czy wszystkie wartoœci NA 
+w przypadku tej zmiennej oznaczaj¹ brak danych? 
 
 # Zadanie 2
-Podaj biznesowy (ekspercki) sposÃ³b uzupeÅ‚nienia wartoÅ›ci NA dla zmiennej Other.
+Podaj biznesowy (ekspercki) sposób uzupe³nienia wartoœci NA dla zmiennej Other.
 
 # Zadanie 3
-UzupeÅ‚nij braki danych na zmiennej Land wykorzystujÄ…c rozkÅ‚ad empiryczny.
-Jak wykorzystaÄ‡ nowo pozyskane informacje w uzupeÅ‚nieniu zmiennych GDPPerCapita 
+Uzupe³nij braki danych na zmiennej Land wykorzystuj¹c rozk³ad empiryczny.
+Jak wykorzystaæ nowo pozyskane informacje w uzupe³nieniu zmiennych GDPPerCapita 
 i MeanSalary? 
 
 # Zadanie 4
-Zweryfikuj dokÅ‚adnoÅ›Ä‡ uzupeÅ‚niania brakÃ³w danych dla zmiennej TOA poprzez modele
-lasÃ³w losowych i najblizszych sÄ…siadÃ³w (Wsk. Braki danych w TOA naleÅ¼y
-zasymulowaÄ‡).
+Zweryfikuj dok³adnoœæ uzupe³niania braków danych dla zmiennej TOA poprzez modele
+lasów losowych i najblizszych s¹siadów (Wsk. Braki danych w TOA nale¿y
+zasymulowaæ).
 
 # Zadnaie 5
-Zweryfikuj rÃ³Å¼nice pomiÄ™dzy wartoÅ›ciami Å›rednich oraz przeciÄ™tnych dla rozkÅ‚adÃ³w 
-poszczegÃ³lnych zmiennych opisujÄ…cych sprawy. OceÅ„ jaki wpÅ‚yw na rÃ³Å¼nice majÄ… 
-wartoÅ›ci skrajne.
+Zweryfikuj ró¿nice pomiêdzy wartoœciami œrednich oraz przeciêtnych dla rozk³adów 
+poszczególnych zmiennych opisuj¹cych sprawy. Oceñ jaki wp³yw na ró¿nice maj¹ 
+wartoœci skrajne.
 
 # Zadanie 6
-PosÅ‚ugujÄ…c siÄ™ wykresami typu boxplot zidentyfikuj wartoÅ›ci odstajÄ…ce (jaka 
-reguÅ‚a jest przyjÄ™ta w funkcji boxplot) na poszczgÃ³lnych zmiennych opisujÄ…cych 
-sprawy. UsuÅ„ przypadki z wartoÅ›ciami odstajÄ…cymi, a nastÄ™pnie wykonaj wykres
-ponownie. Czy nadal moÅ¼esz zaobserwowaÄ‡ wartoÅ›ci odstajÄ…ce?
+Pos³uguj¹c siê wykresami typu boxplot zidentyfikuj wartoœci odstaj¹ce (jaka 
+regu³a jest przyjêta w funkcji boxplot) na poszczgólnych zmiennych opisuj¹cych 
+sprawy. Usuñ przypadki z wartoœciami odstaj¹cymi, a nastêpnie wykonaj wykres
+ponownie. Czy nadal mo¿esz zaobserwowaæ wartoœci odstaj¹ce?
 
 # Zadanie 7
 http://www.itl.nist.gov/div898/handbook/eda/section3/eda35h2.htm
-Napisz funkcjÄ™ wyznaczajÄ…cÄ… statystykÄ™ Tietjen-Moore (szczegÃ³Å‚y w linku). Napisz
-funkcjÄ™ do wyznaczania wartoÅ›ci krytycznej testu Tietjen-Moore (Wsk. EmpirycznÄ…
-wartoÅ›Ä‡ krytycznÄ… testu szacujemy poprzez wyznaczenie odpowiedniego, zaleÅ¼nie
-od poziomu istotnoÅ›ci, kwantyla rozkÅ‚adu statystyki testowej wyznaczonej przy 
-prawdziwoÅ›ci hipotezy zerowej). 
+Napisz funkcjê wyznaczaj¹c¹ statystykê Tietjen-Moore (szczegó³y w linku). Napisz
+funkcjê do wyznaczania wartoœci krytycznej testu Tietjen-Moore (Wsk. Empiryczn¹
+wartoœæ krytyczn¹ testu szacujemy poprzez wyznaczenie odpowiedniego, zale¿nie
+od poziomu istotnoœci, kwantyla rozk³adu statystyki testowej wyznaczonej przy 
+prawdziwoœci hipotezy zerowej). 
 
 # Zadnaie 8
 # Techniczny
 http://www.rdatamining.com/examples/outlier-detection
 # Merytoryczny
 http://www.dbs.ifi.lmu.de/Publikationen/Papers/LOF.pdf
-PowtarzajÄ…c kroki z przykÅ‚adu (link techniczny) zidentyfikuj wartoÅ›ci odstajÄ…ce 
-na zbiorze spraw kart kredytowych uÅ¼ywajÄ…c pakietu DMwR. Wyznacz zbiÃ³r wartoÅ›ci 
-odstajÄ…cych uzywajÄ…c pakietu mvoutlier, a nastÄ™pnie porÃ³wnaj oba zbiory. Co 
-moÅ¼esz powiedzieÄ‡ o tych dwÃ³ch zbiorach?
+Powtarzaj¹c kroki z przyk³adu (link techniczny) zidentyfikuj wartoœci odstaj¹ce 
+na zbiorze spraw kart kredytowych u¿ywaj¹c pakietu DMwR. Wyznacz zbiór wartoœci 
+odstaj¹cych uzywaj¹c pakietu mvoutlier, a nastêpnie porównaj oba zbiory. Co 
+mo¿esz powiedzieæ o tych dwóch zbiorach?
 
 # Zadanie 9
-CoÅ› na metrykÄ™ Mahalonobisa   # transformacja danych na normalne???
+Coœ na metrykê Mahalonobisa   # transformacja danych na normalne???
 
 # Zadanie 10 
-Wyznacz wartoÅ›ci wspÃ³Å‚czynnika stabilnoÅ›ci populacji porÃ³wnujÄ…c zbiory pozyczek
-oraz kart kredytowych. Jak podzieliÄ‡ ("pobandowaÄ‡ na klasy") zmienne ciÄ…gÅ‚e?
+Wyznacz wartoœci wspó³czynnika stabilnoœci populacji porównuj¹c zbiory pozyczek
+oraz kart kredytowych. Jak podzieliæ ("pobandowaæ na klasy") zmienne ci¹g³e?
 
 #! lab 7
 
