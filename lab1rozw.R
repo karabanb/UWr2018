@@ -28,7 +28,7 @@ goodBadProp <- function(tab, p){
   
 }
 
-z <- goodBadProp(x, 0.1)
+z <- goodBadProp(x, 0.2)
 
 class(z)
 
@@ -63,42 +63,50 @@ rndNumbers <- data.table(U = runif(n),
                          P = rpois(n, 2)
 )
 
-rndNumbers[, .(meanZ = mean(U),
-               sdZ = sd(U),
-               medianZ = median(U),
-               meanE = mean(Z),
-               sdE = sd(Z),
-               medianE = median(Z),
+rndNumbers[, .(meanU = mean(U),
+               medianU = median(U),
+               sdU = sd(U),
+               meanZ = mean(Z),
+               medianZ = median(Z),
+               sdZ = sd(Z),
                meanE = mean(E),
-               sdE = sd(E),
-               medianE = median(E))]
+               medianE = median(E),
+               sdE = sd(E))]
 
-rndNumbers[, .(meanZ = mean(U),
-               sdZ = sd(U),
-               medianZ = median(U),
-               meanE = mean(Z),
-               sdE = sd(Z),
-               medianE = median(Z),
+rndNumbers[, .(meanU = mean(U),
+               medianU = median(U),
+               sdU = sd(U),
+               meanZ = mean(Z),
+               medianZ = median(Z),
+               sdZ = sd(Z),
                meanE = mean(E),
-               sdE = sd(E),
-               medianE = median(E)),
+               medianE = median(E),
+               sdE = sd(E)),
                by = G]
 
-rndNumbers[, .(meanZ = mean(U),
-              sdZ = sd(U),
-              medianZ = median(U),
-              meanE = mean(Z),
-              sdE = sd(Z),
-              medianE = median(Z),
-              meanE = mean(E),
-              sdE = sd(E),
-              medianE = median(E)),
-              by = P > mean(P)]
+rndNumbers[, .(meanU = mean(U),
+               medianU = median(U),
+               sdU = sd(U),
+               meanZ = mean(Z),
+               medianZ = median(Z),
+               sdZ = sd(Z),
+               meanE = mean(E),
+               medianE = median(E),
+               sdE = sd(E))]
+
+rndNumbers[, .(meanU = mean(U),
+               medianU = median(U),
+               sdU = sd(U),
+               meanZ = mean(Z),
+               medianZ = median(Z),
+               sdZ = sd(Z),
+               meanE = mean(E),
+               medianE = median(E),
+               sdE = sd(E)),
+               by = P > mean(P)]
 
 
 summary(rndNumbers)
-
-
 
 
 
@@ -127,8 +135,8 @@ rndNumbers2 <- rndNumbers[Id <= 10]
 tab <- data.table(Id = sample(c(1:3), 10, replace = TRUE),
                   Id2 = sample(c(6:8), 10, replace = TRUE))
 
-setkey(rndNumbers2, Id)
-setkey(tab, Id2)
+setDT(rndNumbers2, key ="Id")
+setDT(tab, key = "Id")
 
 tab[rndNumbers2]
 tab[rndNumbers2, nomatch=0]
@@ -136,9 +144,6 @@ tab[rndNumbers2, nomatch=0]
 tab[rndNumbers2]
 rndNumbers2[tab]
 rndNumbers2[tab, on = .(Id, Id2),nomatch=0]
-
-CJ[tab,rndNumbers2]
-
 
 
 
@@ -155,8 +160,6 @@ CJ[tab,rndNumbers2]
 #   pliku csv.
 
 ### Twoje rozwiązanie ###
-
-
 
 x <- data.table(z = rnorm(10^6), u = runif(10^6))
 y <- data.frame(z = rnorm(10^6), u = runif(10^6))
