@@ -1,9 +1,12 @@
 ---
-title: "Laboratorium 1. Lista zadań"
+title: "Modelowanie Statystyczne w Zarządzaniu Wierzytelnościami Masowymi"
 output: html_notebook
 ---
 
-## Zadanie 1
+### Laboratorium 1. Lista zadań
+
+
+#### Zadanie 1
 
 Stwórz strukturę danych `x <- data.table(U = runif(10))` . Następnie napisz funkcję `goodBadProp`, która przyjmuje jako argumenty strukturę `tab` (data.table) oraz liczbę **p** z przedziału (0, 1). W ciele funkcji wykonaj operacje:
 
@@ -13,7 +16,7 @@ a **0** w przeciwnym przypadku,
 goodów i badów.
 - zadbaj o to, by kod funkcji nie zależał od wprost od **U** (nazwy kolumny w x)
 
-## Zadanie 2
+#### Zadanie 2
 
 Stwórz tabelę o nazwie `rndNumbers` (klasa `data.table`) o 100k wierszach i kolumnach:
 
@@ -27,7 +30,7 @@ Wyznacz (korzystając z funckjonalności `data.table`) statystyki opisowe wybran
 Wyznacz (korzystając z funckjonalności `data.table`) statystyki opisowe kolumn **U, Z, E** w rozbiciu względem kolumny **G**.
 Wyznacz (korzystając z funckjonalności `data.table`) statystyki opisowe kolumn **U, Z, E** w rozbiciu względem czy **P** jest większe od swojej śedniej.
 
-## Zadanie 3
+#### Zadanie 3
 
 Do tabeli `rndNumbers` z zadania 2 dodaj kolumnę **Id** przypisując do niej `.I`.
 Stwórz tabelę `rndNumbers2` jako podzbiór tabeli `rndNumbers` dla **Id <= 10**.
@@ -41,7 +44,7 @@ Wykonaj joiny tabel `tab` i `rndNumbers2` w różnej kolejności (np. `tab[rndNu
 Co otrzymujesz w wyniku (po jakiej kolumnie wykonywany jest join; wymuś joina po drugiej kolumnie)? 
 Do czego służą parametry `nomatch`, `allow.cartesian`?
 
-## Zadanie 4
+#### Zadanie 4
 
 Stwórzcie `data.table` x o 1mln wierszy i dwóch kolumnach z liczbami z rozkładu  jendostajnego i normalnego. Zapiszcie tabelę x do pliku csv. Zweryfikujcie czas zapisu przy użyciu standardowych funkcji zapisu do csv np. `write.table`, `write.csv` oraz `fwrite` (data.table). 
 Wczytajcie utworzony plik używając funckji `read.table` oraz `fread` porównując czas wczytywania danych.
