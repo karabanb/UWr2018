@@ -1,6 +1,8 @@
 ---
 title: "Modelowanie Statystyczne w Zarządzaniu Wierzytelnościami Masowymi"
-output: html_notebook
+output:
+  pdf_document: default
+  html_notebook: default
 ---
 
 ### Laboratorium 1. Lista zadań
@@ -49,7 +51,6 @@ Do czego służą parametry `nomatch`, `allow.cartesian`?
 Stwórzcie `data.table` x o 1mln wierszy i dwóch kolumnach z liczbami z rozkładu  jendostajnego i normalnego. Zapiszcie tabelę x do pliku csv. Zweryfikujcie czas zapisu przy użyciu standardowych funkcji zapisu do csv np. `write.table`, `write.csv` oraz `fwrite` (data.table). 
 Wczytajcie utworzony plik używając funckji `read.table` oraz `fread` porównując czas wczytywania danych.
 Zwróćcie uwagę na ilość zajmowanego miejsca przez zmienną w R oraz wielkość pliku csv.
-
 
 
 
