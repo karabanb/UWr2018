@@ -136,14 +136,14 @@ tab <- data.table(Id = sample(c(1:3), 10, replace = TRUE),
                   Id2 = sample(c(6:8), 10, replace = TRUE))
 
 setDT(rndNumbers2, key ="Id")
-setDT(tab, key = "Id")
+setDT(tab, key = "Id2")
 
 tab[rndNumbers2]
 tab[rndNumbers2, nomatch=0]
 
 tab[rndNumbers2]
 rndNumbers2[tab]
-rndNumbers2[tab, on = .(Id, Id2),nomatch=0]
+rndNumbers2[tab, on = .(Id, Id2), nomatch = 0] #bląd
 
 
 
