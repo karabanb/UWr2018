@@ -12,41 +12,52 @@ library(caret)
 ## Zadanie 1
 
 
-# Wykonaj samodzielnie (bez u¿ywania dedykowanych pakietów/funkcji) wykres ROC. 
-# Wejœciem bêdzie wektor parwdopodobieñstw i wektor oznaczeñ good/bad.
-
-
-
-
+# Wykonaj samodzielnie (bez uÅ¼ywania dedykowanych pakietÃ³w/funkcji) wykres ROC. 
+# WejÅ›ciem bÄ™dzie wektor prawdopodobieÅ„stw i wektor oznaczeÅ„ good/bad.
 
 ## Zadanie 2
 
-# Zdefiniuj zmienn¹ celu jako pojawienie siê wp³aty w pierwszych 6ciu miesiêcy obs³ugi. Nastêpnie podziel zbiór danych 
-# na ucz¹cy i testowy w proporcji 70% i 30% zachwouj¹c taki sam rozk³ad zmiennej celu w zbiorze ucz¹cycm i testowym. 
-# Do wykonania zadania u¿yj funkcji createDataPartition z pakietu caret
+# Zdefiniuj zmiennÄ… celu jako pojawienie siÄ™ wpÅ‚aty w pierwszych 6ciu miesiÄ™cy obsÅ‚ugi. NastÄ™pnie podziel zbiÃ³r danych 
+# na uczÄ…cy i testowy w proporcji 70% i 30% zachwoujÄ…c taki sam rozkÅ‚ad zmiennej celu w zbiorze uczÄ…cycm i testowym. 
+# Do wykonania zadania uÅ¼yj funkcji createDataPartition z pakietu caret
 
 ## Zadanie 3
 
-# U¿yj drzewa klasyfikacyjnego do modelowania zjawiska czy w sprawie pojawi siê 
-# wp³ata w ci¹gu pierwszych 6 miesiêcy obs³ugi. Zadanie wykonaj wykorzystuj¹c
-# pakiety tree i rpart.
+# UtwÃ³rz drzewo klasyfikacyjne do modelowania zjawiska czy w sprawie pojawi siÄ™ 
+# wpÅ‚ata w ciÄ…gu pierwszych 6 miesiÄ™cy obsÅ‚ugi. Zadanie wykonaj wykorzystujÄ…c
+# pakiet rpart.
 
 ## Zadanie 4
 
-# Zbuduj drzewo regresyjne do modelowania skutecznoœci na sprawie od 4 do 12 
-# miesi¹ca obs³ugi (Wsk. Mo¿esz wykorzystaæ zmienne behawioralne z pierwszych
-#                   trzech miesiêcy obs³ugi).
+# UtwÃ³rz model lasu losowego do modelowania zjawiska okre
+
+## Zadanie 4
+
+# Zbuduj drzewo regresyjne do modelowania skumulowanej skutecznoÅ›ci na sprawie w 12 miesiÄ…cu obsÅ‚ugi.
+# Drzewo modeluj wyÅ‚Ä…cznie w oparciu o dane aplikacyjne.
 
 ## Zadanie 5
 
-# Zbuduj drzewa regresyjne do modelowania skutecznoœci skumulowanej na sprawie w 12 mieisi¹cu obs³ugi
-# dla wszystkich kombinacji wartoœci parametrów .....(Wskazówka: do zbudowania siatki kombinacji u¿yj 
-# funkcji expand.grid). Nastêpinie porównaj b³¹d RMSE dla ka¿dego z drzew na zbiorze trainingowym i tesotwym.
-
+# Zbuduj drzewo regresyjne w oparciu o dane aplikacyjne i behawioralne z pierwszych trzech miesiÄ™cy i 
+# oszacuj skutenoÅ›Ä‡ skumulowanÄ… od 4 do 12 miesiÄ…ca obsÅ‚ugi. PorÃ³wnaj bÅ‚Ä…d szacunku tego drzewa
+# z bÅ‚Ä™dem z poprzedniego zadania.
 
 ## Zadanie 6
 
-#  U¿yj lasu losowego do modelowania zjawiska pojawienia siê wp³aty w ci¹gu 6 miesiêcy obs³ugi. Wyniki
-# pórównaj z usyzskanymi w zadaniu 3.
+# Zbuduj drzewa regresyjne do modelowania tego samego problemu jak w zadaniu 5. Tym razem modeluj
+# dla wszystkich kombinacji wartoÅ›ci parametrÃ³w .....
+
+# Do zbudowania siatki kombinacji uÅ¼yj funkcji expand.grid. 
+
+## Zadanie 7 
+
+## Dla wygenerowanych w zadaniu 6 drzew porÃ³wnaj bÅ‚Ä…dd RMSE dla kaÅ¼dego z drzew na zbiorze treningowym i testowym. 
+## WskaÅ¼ przy jakiej kombinacji parametrÃ³w uzyskujemy najlepszÄ… jakoÅ›Ä‡ modelu mierzonÄ… RMSE. 
+
+
+## Zadanie 8
+
+#  U?yj lasu losowego do modelowania zjawiska pojawienia si? wp?aty w ci?gu 6 miesi?cy obs?ugi. Wyniki
+# p?r?wnaj z usyzskanymi w zadaniu 3.
 
 >>>>>>> ef8ddf521ab1a3c698964d1d105f0abcef52faac
