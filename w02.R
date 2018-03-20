@@ -13,12 +13,12 @@ load("KrukUWr2018.RData")
 # z lotu ptaka
 cases[, summary(.SD), .SDcols=setdiff(names(cases), "CaseId")] 
 
-# szczegó³owy pogl¹d na TOA
-cases[, quantile(TOA, probs=seq(0, 1, 0.05))] # jedni wol¹ liczby
-plot(sort(cases$TOA)) # inni wol¹ wykres
-head(cases[order(-TOA), ], 15) # najwiêksze salda (super z³ote karty)
+# szczeg??owy pogl?d na TOA
+cases[, quantile(TOA, probs=seq(0, 1, 0.05))] # jedni wol? liczby
+plot(sort(cases$TOA)) # inni wol? wykres
+head(cases[order(-TOA), ], 15) # najwi?ksze salda (super z?ote karty)
 
-# zró¿nicowanie salda wzglêdem produktu
+# zr??nicowanie salda wzgl?dem produktu
 cases[, .(.N,
   Min=quantile(TOA, probs=0),
   Q05=quantile(TOA, probs=0.05),
@@ -32,10 +32,10 @@ cases[, .(.N,
 countTable <- table(cases$Product,
   cut(cases$TOA, breaks=quantile(cases$TOA, 
     probs=seq(from=0, to=1, by=0.2), include.lowest=TRUE)))
-# wizualizacja czêstoœci tabeli kontyngencji
+# wizualizacja cz?sto?ci tabeli kontyngencji
 barplot(prop.table(countTable, 1), col=c("darkblue","darkred"), beside=TRUE)
 
-# zró¿nicowanie salda wzglêdem produktu i p³ci
+# zr??nicowanie salda wzgl?dem produktu i p?ci
 cases[, .(.N,
   Min=quantile(TOA, probs=0),
   Q05=quantile(TOA, probs=0.05),
@@ -45,7 +45,7 @@ cases[, .(.N,
   Q95=quantile(TOA, probs=0.95),
   Max=quantile(TOA, probs=1)), by=.(Gender, Product)][order(Gender, Product)] 
 
-# zró¿nicowanie salda wzglêdem etapu egzekucji
+# zr??nicowanie salda wzgl?dem etapu egzekucji
 cases[, .(.N,
   Min=quantile(TOA, probs=0),
   Q05=quantile(TOA, probs=0.05),
@@ -55,27 +55,27 @@ cases[, .(.N,
   Q95=quantile(TOA, probs=0.95),
   Max=quantile(TOA, probs=1)), by=.(Bailiff, ClosedExecution)]
 
-# zale¿noœæ pomiêdzy zad³u¿eniem a kapita³em
+# zale?no?? pomi?dzy zad?u?eniem a kapita?em
 plot(cases$Principal, cases$TOA, pch='.')
 abline(lm(cases$TOA~cases$Principal), col="tomato", lwd=3)
 
-# zale¿noœæ pomiêdzy zad³u¿eniem a DPD
+# zale?no?? pomi?dzy zad?u?eniem a DPD
 plot(cases$DPD, cases$TOA, pch='.')
 abline(lm(cases$TOA~cases$DPD), col="tomato", lwd=3)
 
-# proste uzupe³nienie braków poprzez œredni¹
-# brakami danych bêdziemy zajmowaæ siê oddzielnie w przysz³oœci 
+# proste uzupe?nienie brak?w poprzez ?redni?
+# brakami danych b?dziemy zajmowa? si? oddzielnie w przysz?o?ci 
 cases[, MeanSalary:=ifelse(is.na(MeanSalary), 
   mean(MeanSalary, na.rm=TRUE), MeanSalary)]
 
 plot(cases$MeanSalary, cases$TOA, pch='.')
 abline(lm(cases$TOA~cases$MeanSalary), col="tomato", lwd=3)
 
-# zale¿noœæ pomiêdzy zad³u¿eniem a wiekiem
+# zale?no?? pomi?dzy zad?u?eniem a wiekiem
 plot(cases$Age, cases$TOA, pch='.')
 abline(lm(cases$TOA~cases$Age), col="tomato", lwd=3)
 
-# dyskretyzacja (mo¿e u³atwiæ wizualizacjê)   
+# dyskretyzacja (mo?e u?atwi? wizualizacj?)   
 cases[, 
   TOAband:=cut(TOA, 
     breaks=c(0, 1000, 2000, 4000, 6000, 10000, 20000, 40000, 65000))]
@@ -84,20 +84,20 @@ cases[, .(.N, AvgTOA=mean(TOA)), by=TOAband][order(AvgTOA)]
 plot(cases$TOAband, cases$Age)
 # ?boxplot 
 
-# a jak wygl¹da to na poprzednich zmiennych??
+# a jak wygl?da to na poprzednich zmiennych??
 plot(cases$TOAband, cases$Principal)
 plot(cases$TOAband, cases$DPD)
 plot(cases$TOAband, cases$MeanSalary)
 
-# Uwaga: Land to raczej factor (nie ma porz¹dku w tych wartoœciach)
+# Uwaga: Land to raczej factor (nie ma porz?dku w tych warto?ciach)
 plot(as.factor(cases$Land), cases$TOA)
 
 
-########################################## zdarzenia maj¹ dodatkowy wymiar czasu
-# dla ka¿dej sprawy tabela events ma 12 wierszy z 12 miesiêcy obs³ugi
+########################################## zdarzenia maj? dodatkowy wymiar czasu
+# dla ka?dej sprawy tabela events ma 12 wierszy z 12 miesi?cy obs?ugi
 events[cases][, .N, by=CaseId][N != 12, ]
 
-# NA w przypadku zdarzeñ oznacza, ¿e zdarzenie nie wyst¹pi³o
+# NA w przypadku zdarze? oznacza, ?e zdarzenie nie wyst?pi?o
 events[is.na(NumberOfCalls), NumberOfCalls:=0]
 events[is.na(NumberOfCallsWithClient), NumberOfCallsWithClient:=0]
 events[is.na(NumberOfPayment), NumberOfPayment:=0]
@@ -112,7 +112,7 @@ tmp <- events[cases][,
 categories <- sort(unique(cases$TOAband))
 colLine <- rainbow(length(categories))
 
-# próby telefoniczne
+# pr?by telefoniczne
 plot(1:12, tmp[TOAband == categories[1], 
   ]$NumberOfCalls, ylim=c(0, 1.05*max(tmp$NumberOfCalls)), 
   type="l", col=colLine[1], lwd= 3,
@@ -126,7 +126,7 @@ for (i in 2:length(categories)) {
 legend("topright", legend=categories, 
   lty=c(1:6, 1:2), col=colLine, lwd=rep(3, 8))
 
-# g³ówny cel (kasa)
+# g??wny cel (kasa)
 plot(1:12, tmp[TOAband == categories[1], 
   ]$SR, ylim=c(0, 1.05*max(tmp$SR)), 
   type="l", col=colLine[1], lwd= 3,
@@ -140,7 +140,7 @@ for (i in 2:length(categories)) {
 legend("topright", legend=categories, 
   lty=c(1:6, 1:2), col=colLine, lwd=rep(3, 8))
 
-# ¿eby zejœæ na sprawê trzeba ustaliæ moment w czasie
+# ?eby zej?? na spraw? trzeba ustali? moment w czasie
 tmp <- events[cases][Month <= 6,
   .(NumberOfCallsWithClient=sum(NumberOfCallsWithClient),
     NumberOfPayment=sum(ifelse(NumberOfPayment > 0, 1, 0))),
@@ -163,7 +163,7 @@ abline(lm(tmp$NumberOfPayment~tmp$NumberOfCallsWithClient), col="tomato", lwd=3)
 # https://pl.wikipedia.org/wiki/Wsp%C3%B3%C5%82czynnik_korelacji_rang_Spearmana
 # https://pl.wikipedia.org/wiki/Tau_Kendalla
 
-##################################### Uwaga: weryfikowana jest zale¿noœæ liniowa
+##################################### Uwaga: weryfikowana jest zale?no?? liniowa
 x <- seq(from=-1, to=1, by=0.01)
 y1 <- 2*x + rnorm(length(x), sd=0.1)
 cor(x, y1)
@@ -172,13 +172,13 @@ cor(x, y2)
 y3 <- 2*x^2 + rnorm(length(x), sd=0.1)
 cor(x, y3)
 
-plot(x, y1, col="darkred", pch=16, main="Czy wszystkie zbiory s¹ skorelowane?")
+plot(x, y1, col="darkred", pch=16, main="Czy wszystkie zbiory s? skorelowane?")
 lines(x, y2, col="darkblue", type="p", pch=16)
 lines(x, y3, col="darkgreen", type="p", pch=16)
 legend("bottom", legend=c("2x", "-2*x", "2*x^2"), pch=rep(16,3),
   col=c("darkred", "darkblue", "darkgreen"))
 
-# Uwaga: Jakie s¹ ró¿nice pomiêdzy wspó³czynnikami korelacji Pearsona, 
+# Uwaga: Jakie s? r??nice pomi?dzy wsp??czynnikami korelacji Pearsona, 
 #        Spearmana i Kendalla? Jakie to ma znaczenie?
 
 # liczbowo
@@ -195,25 +195,25 @@ corrgram::corrgram(corMatrix, order=FALSE,
   
 corrplot::corrplot(corMatrix, method="ellipse")
 
-###################################################### test istotnoœci korelacji
+###################################################### test istotno?ci korelacji
 cor.test(cases$LoanAmount, cases$Principal, 
   method="pearson", alternative="two.sided", conf.level=0.95)
   
 cor.test(cases$TOA, cases$Age, 
   method="pearson", alternative="two.sided", conf.level=0.95)
 
-# prymitywna podpróbka
+# prymitywna podpr?bka
 cor.test(cases[1:1000, ]$LoanAmount, cases[1:1000, ]$Principal, 
   method="pearson", alternative="two.sided", conf.level=0.95)
   
 cor.test(cases[1:10000, ]$TOA, cases[1:10000, ]$Age, 
   method="pearson", alternative="two.sided", conf.level=0.95)
 
-# dla danych porz¹dkowych lepszym wyborem jest spearman
+# dla danych porz?dkowych lepszym wyborem jest spearman
 cor.test(cases$LoanAmount, as.integer(cases$TOAband), 
   method="spearman", alternative="two.sided", conf.level=0.95)
 
-# na laborkê....
+# na labork?....
 #vars <- setdiff(names(casesTmp), 
 #  c("CaseId", "Product", "Gender", "Land", "TOAband"))
 #
@@ -231,40 +231,40 @@ cor.test(cases$LoanAmount, as.integer(cases$TOAband),
 #
 #corrSignificance[pValue > 0.05, ]
 
-# Uwaga: Globalne zale¿noœci/wnioski mog¹ byæ nieprawdziwe lokalnie i odwrotnie.
-# Uwaga: Do tematu wrócimy przy okazji miar asocjacji.
+# Uwaga: Globalne zale?no?ci/wnioski mog? by? nieprawdziwe lokalnie i odwrotnie.
+# Uwaga: Do tematu wr?cimy przy okazji miar asocjacji.
 
-#!############################## co mo¿emy wycisn¹æ z danych - dodatkowe zmienne
-# przekszta³cenia funkcyjne
+#!############################## co mo?emy wycisn?? z danych - dodatkowe zmienne
+# przekszta?cenia funkcyjne
 cases[, LogTOA:=log(TOA)]
 
-hist(cases$TOA) # odstaj¹ca
-hist(cases$LogTOA) # logarytm to szczegó³ny przypadek transfomacji Box'a-Cox'a
+hist(cases$TOA) # odstaj?ca
+hist(cases$LogTOA) # logarytm to szczeg??ny przypadek transfomacji Box'a-Cox'a
 
-# zmienne pochodne - sp³acenie kredytu
+# zmienne pochodne - sp?acenie kredytu
 cases[Product == "Cash loan", LoanRepayment:=1 - Principal/LoanAmount]
 
-# wartoœci ujemne
+# warto?ci ujemne
 plot(sort(cases[Product == "Cash loan", LoanRepayment]))
 head(cases[Product == "Cash loan", ][order(LoanRepayment)], 30)
 
-# ustawmy bariery (uwaga: lepiej nie tworzyæ du¿ych atomów)
+# ustawmy bariery (uwaga: lepiej nie tworzy? du?ych atom?w)
 cases[LoanRepayment < 0, .N]
 cases[LoanRepayment < 0, LoanRepayment:=0]
 
 plot(cases$TOAband, cases$LoanRepayment, cex.axis=0.5)
 
-# atom mo¿e zaciemniæ resztê rozk³adu
+# atom mo?e zaciemni? reszt? rozk?adu
 hist(cases$M_LastPaymentToImportDate)
 
-# pierwszy miesi¹c kontaktu
+# pierwszy miesi?c kontaktu
 tmp <- events[cases][NumberOfCallsWithClient > 0,
   .(MinMonth_CWC=min(Month)),
   by=.(CaseId, TOAband)]
   
 plot(sort(tmp$MinMonth_CWC))  
 
-# czy wp³ata po telefonie 2M
+# czy wp?ata po telefonie 2M
 tmp <- events[NumberOfPayment > 0, .(CaseId, MO=Month)]
 setDT(tmp, key="CaseId")
 
@@ -280,4 +280,4 @@ events <- tmp[events]
 events[, .N, by=PaymentAfterCWC]
 
 
-# i co Wam jeszcze przyjdzie do g³owy (pod warunkiem, ¿e bêdzie u¿yteczne)
+# i co Wam jeszcze przyjdzie do g?owy (pod warunkiem, ?e b?dzie u?yteczne)

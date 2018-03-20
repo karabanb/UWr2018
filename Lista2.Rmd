@@ -3,6 +3,7 @@ title: "Modelowanie Statystyczne w Zarządzaniu Wierzytelnościami Masowymi"
 output:
   html_document:
     df_print: paged
+  pdf_document: default
 ---
 
 <br>
@@ -23,8 +24,9 @@ library(corrplot)
 
 ## Opcjonalne pakiety:
 
-library(ggplot2)
-library(discretization)
+library(ggplot2)        # wizualizacja
+library(discretization) # dyskretyzacja zmiennych ciągłych
+library(FSelector)      # rangowanie cech
 
 ```
 
@@ -32,7 +34,7 @@ library(discretization)
 
 ### Zadanie 1.
 
-Wyznacz skuteczność (suma wpłat przez wartość zadłułenia) w różnych horyzontach
+Wyznacz skuteczność SR (suma wpłat przez wartość zadłułenia) w różnych horyzontach
 czasu (np. 3M, 6M, 12M) i wyznacz jej statystyki opisowe (kwantyle) w podziale na:
 
 - Gender
@@ -47,7 +49,7 @@ czasu (np. 3M, 6M, 12M) i wyznacz jej statystyki opisowe (kwantyle) w podziale n
 Wyniki zaprezentuj również na wykresie. Które zmienne najlepiej różnicują 
 skuteczność (co rozumiesz poprzez "różnicują"")?
 
-Wyznacz korelacje pomiędzy zmienną skuteczności a wskazanymi zmiennymi.
+Wyznacz korelacje pomiędzy zmienną skuteczności a innymi zmiennymi.
 
 Czy w zbiorze danych istnieją inne zmienne (od wskazanych) z dużą wartością
 korelacji?
@@ -80,7 +82,7 @@ odpowiedników. Co można zauważyć?
 Wyznacz wykres warstwowy pokazujący udział skuteczności w kolejnych miesiącach 
 obsługi w podziale na:
 
-- SR w sprawach bez kontaktu (zar?wno telefoniczny jak i wizyta)
+- SR w sprawach bez kontaktu (zarówno telefoniczny jak i wizyta)
 - SR w sprawach z kontaktem
 - SR w sprawach z ugod?
 - SR w sprawach przekazanych do sądu.
@@ -91,6 +93,9 @@ Jeżli w sprawie był kontakt w 2M oraz w tej sprawie została podpisana ugoda
 w 2M, to zaliczamy tą sprawę (jej skuteczność) do kategorii spraw z ugodą w 2M.
 
 ### Zadanie 6
+
 Wyznacz istotność korelacji pomiędzy parami zmiennych.
+
+<br><br>
 
 
