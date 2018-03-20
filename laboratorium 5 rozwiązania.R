@@ -29,35 +29,43 @@ library(caret)
 
 ## Zadanie 4
 
-# Utwórz model lasu losowego do modelowania zjawiska okre
-
-## Zadanie 4
-
-# Zbuduj drzewo regresyjne do modelowania skumulowanej skuteczności na sprawie w 12 miesiącu obsługi.
-# Drzewo modeluj wyłącznie w oparciu o dane aplikacyjne.
+# Zmodyfikuj drzewo klasyfikacyjne z poprzedniego zadania zmieniając wartości parametrów cp, maxdepth, minsplit. 
+# Co można zauważyć?
 
 ## Zadanie 5
 
-# Zbuduj drzewo regresyjne w oparciu o dane aplikacyjne i behawioralne z pierwszych trzech miesięcy i 
-# oszacuj skuteność skumulowaną od 4 do 12 miesiąca obsługi. Porównaj błąd szacunku tego drzewa
-# z błędem z poprzedniego zadania.
+# Wygeneruj macierz konfuzji dla wybranego przez Ciebie drzewa dla zbioru uczącego i testowego. 
+# Jak kształtują się miary Accuracy, Precision i Sensitivity w obydwu macierzach?
 
 ## Zadanie 6
 
-# Zbuduj drzewa regresyjne do modelowania tego samego problemu jak w zadaniu 5. Tym razem modeluj
+## Wygeneruj wykres ROC dla zbioru uczącego i testowego za pomocą napisanej przez Ciebie funkcji z zadania 1.
+
+
+## Zadanie 7
+
+# Zbuduj drzewo regresyjne w oparciu o dane aplikacyjne i behawioralne z pierwszych trzech miesięcy i 
+# oszacuj skuteność skumulowaną od 4 do 12 miesiąca obsługi..
+
+## Zadanie 8
+
+# Zbuduj drzewa regresyjne do modelowania tego samego problemu jak w zadaniu 7. Tym razem modeluj
 # dla wszystkich kombinacji wartości parametrów .....
 
 # Do zbudowania siatki kombinacji użyj funkcji expand.grid. 
 
-## Zadanie 7 
+## Zadanie 9 
 
 ## Dla wygenerowanych w zadaniu 6 drzew porównaj błądd RMSE dla każdego z drzew na zbiorze treningowym i testowym. 
 ## Wskaż przy jakiej kombinacji parametrów uzyskujemy najlepszą jakość modelu mierzoną RMSE. 
 
 
-## Zadanie 8
+## Zadanie 10
 
-#  U?yj lasu losowego do modelowania zjawiska pojawienia si? wp?aty w ci?gu 6 miesi?cy obs?ugi. Wyniki
-# p?r?wnaj z usyzskanymi w zadaniu 3.
+#  Do modelowania tego samego problemu regersyjnego użyj lasu losowego z pakietu randomForest. 
+# Czy przy domyślnych parametrach wynik mierzony miarą RMSE jest lepszy od najlepszego wyniku z zdania 9?
 
->>>>>>> ef8ddf521ab1a3c698964d1d105f0abcef52faac
+## Zadanie 11
+
+## 
+
