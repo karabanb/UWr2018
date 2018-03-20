@@ -1,0 +1,75 @@
+---
+title: "Laboratorium 5"
+author: "Bartlomiej Karaban"
+date: "20 03 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Wymagane biblioteki
+
+```{r message=FALSE, warning=FALSE}
+library(data.table)
+library(rpart)
+library(rpart.plot)
+library(ada)
+library(gbm)
+library(randomForest)
+library(caret)
+```
+
+
+
+## Zadanie 1
+
+Wykonaj samodzielnie (bez używania dedykowanych pakietów/funkcji) wykres ROC. Wejściem będzie wektor prawdopodobieństw i wektor oznaczeń good/bad.
+
+
+
+## Zadanie 2
+
+Zdefiniuj zmienną celu jako pojawienie się wpłaty w pierwszych 6ciu miesięcach obsługi. Następnie podziel zbiór danych
+na uczący i testowy w proporcji 70% i 30% zachwoując taki sam rozkład zmiennej celu w zbiorze uczącycm i testowym. 
+Do wykonania zadania użyj funkcji `createDataPartition` z pakietu `caret`
+
+## Zadanie 3
+
+Utwórz drzewo klasyfikacyjne do modelowania zjawiska czy w sprawie pojawi się wpłata w ciągu pierwszych 6 miesięcy obsługi. Zadanie wykonaj wykorzystując pakiet `rpart`.
+
+Wygeneruj wizualzację drzewa przy użyciu pakietu `rpart.plot`.
+
+
+## Zadanie 4
+
+Zmodyfikuj drzewo klasyfikacyjne z poprzedniego zadania zmieniając wartości parametrów `cp`, `maxdepth`, `minsplit`. Co można zauważyć?
+
+## Zadanie 5
+
+Dokonaj predykcji klasy na podstawie zbudowanych modeli drzew zarówno dla zbioru uczącego jak i testowego
+Wyniki zapisz do zmiennych
+
+## Zadanie 6
+
+Wygeneruj macierz konfuzji przy użyciu funkcji `confusionMatrix` z pakietu `caret` dla najbardziej i najmniej złożonego drzewa z poprzedniego zadania dla zbioru uczącego i testowego. Jak kształtują się miary Accuracy, Precision i Sensitivity w obydwu macierzach?
+
+## Zadanie 7
+
+Wygeneruj wykres ROC dla zbioru uczącego i testowego za pomocą napisanej przez Ciebie funkcji z zadania 1.
+
+## Zadanie 8
+
+Zbuduj drzewo regresyjne w oparciu o dane aplikacyjne i behawioralne z pierwszych trzech miesięcy i 
+oszacuj skuteność skumulowaną od 4 do 12 miesiąca obsługi.
+
+## Zadanie 9
+
+Zbuduj drzewa regresyjne do modelowania tego samego problemu jak w zadaniu 7. Tym razem modeluj
+dla wszystkich kombinacji wartości parametrów `maxdepth = seq(2,6,1)`, `minsplit = c(500,1000,5000)`
+
+Do zbudowania siatki kombinacji wartości parametrów użyj funkcji `expand.grid`.
+
+## Zadanie 10
+
