@@ -1,6 +1,4 @@
 
-<<<<<<< HEAD
-=======
 library(data.table)
 library(rpart)
 library(rpart.plot)
@@ -26,6 +24,11 @@ load("KrukUwr2018.RData")
 events[is.na(events)] <- 0
 
 dataset_classif <- cases[events][Month<=6, .(IfPayment6M = ifelse(sum(NumberOfPayment)>0, 1, 0)), by = CaseId][cases]
+
+train_ix <- createDataPartition(dataset_classif$IfPayment6M, p= 0.7, list = FALSE)
+
+mean(dataset_classif[train_ix,]$IfPayment6M)
+mean(dataset_classif[-train_ix,]$IfPayment6M)
 
 
 
