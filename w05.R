@@ -4,7 +4,7 @@ gcHi(5) # Hello World!
 library(data.table)
 library(rpart) # drzewa regresyjne
 library(tree) # drzewa regresyjne
-# jest jeszcze wiele innych pakietów do drzew np. party
+# jest jeszcze wiele innych pakiet?w do drzew np. party
 library(randomForest) # lasy losowe
 library(gbm) # boosting
 library(ada) # boosting
@@ -32,17 +32,18 @@ summary(cases)
 
 cases <- cases[Product == "Cash loan", ]
 
+events[is.na(events)]<-0
+
 goals <- events[cases][Month <= 3, .(
-  Reach=max(ifelse(gcisna(NumberOfVisitsWithClient, 0) > 0 
-    | gcisna(NumberOfCallsWithClient, 0) > 0, 1, 0)),
-  Concluded=max(ifelse(gcisna(NumberOfAgreementConcluded, 0) > 0, 1, 0)),
-  Signed=max(ifelse(gcisna(NumberOfAgreementSigned, 0) > 0, 1, 0)),
-  Payment=max(ifelse(gcisna(NumberOfPayment, 0) > 0, 1, 0))), 
+  Reach=max(ifelse(NumberOfVisitsWithClient > 0 | NumberOfCallsWithClient > 0, 1, 0)),
+  Concluded=max(ifelse(NumberOfAgreementConcluded > 0, 1, 0)),
+  Signed=max(ifelse(NumberOfAgreementSigned > 0, 1, 0)),
+  Payment=max(ifelse(NumberOfPayment > 0, 1, 0))), 
   by=CaseId]
 setDT(goals, key="CaseId")
 
-# dla uproszczenia ominiemy NA (ró¿ne zachowanie pakietów tree i rpart)
-# tematem uzupe³niania NA zajmiemy siê na nastêpnym wyk³adzie
+# dla uproszczenia ominiemy NA (r??ne zachowanie pakiet?w tree i rpart)
+# tematem uzupe?niania NA zajmiemy si? na nast?pnym wyk?adzie
 # Uwaga: pakiet tree i tak to zrobi!!
 casesTmp <- na.omit(cases[goals])
 
@@ -57,7 +58,7 @@ casesTmp[, `:=`(
 summary(casesTmp)
 
 variables <- setdiff(names(casesTmp), c("CaseId", "Product",
-  "Concluded", "Signed", "Payment"))
+  "Concluded", "Signed", "Payment", "Land"))
 casesMod <- casesTmp[, .SD, .SDcols=variables]
 summary(casesMod)
 
@@ -65,23 +66,23 @@ n <- casesMod[, .N]
 train <- sample(1:n, 0.6*n)
 testSet <- casesMod[-train, ]
 
-##################################################### podzia³ na wêz³y w drzewie
-# drzewo klasyfikacyjne (binarne - ka¿dy wêze³ ma conajwy¿ej dwa liœcie)
+##################################################### podzia? na w?z?y w drzewie
+# drzewo klasyfikacyjne (binarne - ka?dy w?ze? ma conajwy?ej dwa li?cie)
 #
-# miary podzia³u (najczêœciej spotykane):
+# miary podzia?u (najcz??ciej spotykane):
 # - gini impurity
 #   gini = 1 - \sum_i p_mi^2 = \sum_i p_mi*(1 - p_mi)
 #    
-#   gini ~ mierzy poziom b³êdnej klasyfikacji
+#   gini ~ mierzy poziom b??dnej klasyfikacji
 # - entropia (brak opcji w tree)
 #   entopia = - \sum_i p_mi log_2 p_mi
 #
-#   entropia ~ miara "nieporz¹dku" (chaosu)
-#   Jaki rozk³ad maksymalizuje entropiê:
-#     - rozk³ad dyskretny o K punktach: rozk³ad jednostajny
-#     - rozk³ad ci¹g³y na odcinku: rozk³ad jednostajny
-#     - rozk³ad ci¹g³y na pó³prostej: rozk³ad wyk³adniczy
-#     - rozk³ad ci¹g³y na prostej: rozk³ad normalny
+#   entropia ~ miara "nieporz?dku" (chaosu)
+#   Jaki rozk?ad maksymalizuje entropi?:
+#     - rozk?ad dyskretny o K punktach: rozk?ad jednostajny
+#     - rozk?ad ci?g?y na odcinku: rozk?ad jednostajny
+#     - rozk?ad ci?g?y na p??prostej: rozk?ad wyk?adniczy
+#     - rozk?ad ci?g?y na prostej: rozk?ad normalny
 # drzewo regresyjne
 # - RSS
 #   RSS = \sum_i (y_i - \hat{y}_i)^2
@@ -95,7 +96,7 @@ tTree <- tree(Reach~., data=casesMod, subset=train,
 plot(tTree)
 text(tTree, pretty=0, cex=0.5)
 
-# czy to drzewo jest kompletnie bezu¿yteczne?
+# czy to drzewo jest kompletnie bezu?yteczne?
 table(testSet$Reach, predict(tTree, testSet, type="class"))
 
 P_prior <- casesMod[train, ][ Reach == 1, .N]/casesMod[train, .N]
@@ -106,7 +107,7 @@ tmp[, .N, by=.(Reach, IfBetter)]
 # krzywa ROC: Recieving Operating Curve
 # https://en.wikipedia.org/wiki/Receiver_operating_characteristic
 #
-# zwi¹zek ROC z indeksem Gini 
+# zwi?zek ROC z indeksem Gini 
 # Gini = 2*AUROC - 1
 # gdzie AUROC: Area Under ROC. 
 rocplot(predict(tTree, testSet, type="vector")[, 2], testSet$Reach)
@@ -136,7 +137,7 @@ table(testSet$Reach, predict(rTree, testSet, type="class"))
 printcp(rTree)
 plotcp(rTree)
 
-# gdy nie ka¿dy b³¹d prognozy boli tak samo
+# gdy nie ka?dy b??d prognozy boli tak samo
 rTreeLoss <- rpart(Reach~., data=casesMod, subset=train, 
   method="class", minsplit=1000, minbucket=500, cp=1e-12,
   parms=list(split="information", loss=matrix(c(0, 1, 3, 0), 2, 2, byrow=TRUE)))
@@ -153,44 +154,44 @@ table(testSet$Reach, predict(rTreeLoss, testSet, type="class"))
 ## tune (e1071)???
 
 ######################################################################## bagging
-# idea: bootstrapujemy próbê i na ka¿dej budujemy oddzielne drzewo
-# wynikiem predykcji (klasyfikacji/regresji) jest uœredniony wynik po B drzewach
-# zazwyczaj buduje siê drzewa du¿e (bez przycinania)
+# idea: bootstrapujemy pr?b? i na ka?dej budujemy oddzielne drzewo
+# wynikiem predykcji (klasyfikacji/regresji) jest u?redniony wynik po B drzewach
+# zazwyczaj buduje si? drzewa du?e (bez przycinania)
 bagForest <- randomForest(Reach~., data=casesMod, 
-  mtry=18, ntree=25, nodesize=500, 
+  mtry=5, ntree=25, nodesize=500, 
   cutoff=casesMod[, .N/casesMod[, .N], by=Reach][order(Reach)]$V1,
   importance=TRUE, keep.inbag=TRUE, keep.forest=TRUE)
 
 summary(bagForest)
 bagForest
 
-# jak malej¹ b³êdy wraz ze wzrostem liczby drzew
+# jak malej? b??dy wraz ze wzrostem liczby drzew
 plot(bagForest)
 
-# out of bag (podzbiór spraw s³u¿¹cy do estymacji b³êdu)
-# obserwacje, które nie zosta³y wylosowane do budowy drzewa
+# out of bag (podzbi?r spraw s?u??cy do estymacji b??du)
+# obserwacje, kt?re nie zosta?y wylosowane do budowy drzewa
 bagForest$oob.times
 
 # macierz liczba obserwacji x liczba drzew 
-# które obserwacje by³y wziête do budowy drzewa  
+# kt?re obserwacje by?y wzi?te do budowy drzewa  
 bagForest$inbag
 
-# uœrednione wyniki per obserwacja (³osowanie modeli/drzew)
+# u?rednione wyniki per obserwacja (?osowanie modeli/drzew)
 bagForest$votes
 
-# "dobroæ" zmiennych - jak wp³ywaj¹ na prognozê/klasyfikacjê
+# "dobro?" zmiennych - jak wp?ywaj? na prognoz?/klasyfikacj?
 # MeanDecreseAccuracy:
-# - policz b³¹d (classification error/MSE) dla obserwacji "out of bag"
-# - spermutuj wartoœci dla m-tej zmiennej
-# - policz b³¹d dla transformowanych danych (obserwacje out of bag)
-# - policz ró¿nicê b³êdów
-# - uœrednij ró¿nice po wszystkich drzewach i znormalizuj przez standardowe 
-#   odchylenie ró¿nic
+# - policz b??d (classification error/MSE) dla obserwacji "out of bag"
+# - spermutuj warto?ci dla m-tej zmiennej
+# - policz b??d dla transformowanych danych (obserwacje out of bag)
+# - policz r??nic? b??d?w
+# - u?rednij r??nice po wszystkich drzewach i znormalizuj przez standardowe 
+#   odchylenie r??nic
 #
 # MeanDecreaseGini:
-# suma obni¿eñ wskaŸnika "nieczystoœci" (impurities: Gini Impurity 
-# w klasyfikacji; RSS w regresji) dla danej zmiennej po wszystkich wêz³ach 
-# w danym drzewie, a nastêpnie uœredniona po wszystkich drzewach w lesie
+# suma obni?e? wska?nika "nieczysto?ci" (impurities: Gini Impurity 
+# w klasyfikacji; RSS w regresji) dla danej zmiennej po wszystkich w?z?ach 
+# w danym drzewie, a nast?pnie u?redniona po wszystkich drzewach w lesie
 importance(bagForest)
 varImpPlot(bagForest)
 
@@ -200,13 +201,13 @@ treesize(bagForest, terminal=TRUE)
 # pojedyncze drzewo
 getTree(bagForest, k=9, labelVar=TRUE)
 
-# partial plot (wp³yw na logit)
+# partial plot (wp?yw na logit)
 partialPlot(bagForest, casesMod, DPD, "1")
 
 ################################################################## random forest
-# idea: podobnie jak w baggingu buutstrapujemy próbê i na ka¿dej budujemy 
-# oddzielne drzewo, tyle ¿e w ka¿dym drzewie u¿ywamy jedynie losowy podzbiór 
-# zmiennych objaœniaj¹cych (sqrt(p) w klasyfikacji, p/3 w regresji - domyœlnie)
+# idea: podobnie jak w baggingu buutstrapujemy pr?b? i na ka?dej budujemy 
+# oddzielne drzewo, tyle ?e w ka?dym drzewie u?ywamy jedynie losowy podzbi?r 
+# zmiennych obja?niaj?cych (sqrt(p) w klasyfikacji, p/3 w regresji - domy?lnie)
 rndForest <- randomForest(Reach~., data=casesMod,
   mtry=5, ntree=500, nodesize=1000,
   cutoff=casesMod[, .N/casesMod[, .N], by=Reach][order(Reach)]$V1,
@@ -215,21 +216,21 @@ rndForest <- randomForest(Reach~., data=casesMod,
 summary(rndForest)
 rndForest
 
-# jak malej¹ b³êdu wraz ze wzrostem liczby drzew
+# jak malej? b??du wraz ze wzrostem liczby drzew
 plot(rndForest)
 
-# out of bag (podzbiór spraw s³u¿¹cy do estymacji b³êdu)
-# obserwacje, które nie zosta³y wylosowane do budowy drzewa
+# out of bag (podzbi?r spraw s?u??cy do estymacji b??du)
+# obserwacje, kt?re nie zosta?y wylosowane do budowy drzewa
 rndForest$oob.times
 
 # macierz liczba obserwacji x liczba drzew 
-# które obserwacje by³y wziête do budowy drzewa  
+# kt?re obserwacje by?y wzi?te do budowy drzewa  
 rndForest$inbag
 
-# uœrednione wyniki per obserwacja (g³osowanie modeli/drzew)
+# u?rednione wyniki per obserwacja (g?osowanie modeli/drzew)
 rndForest$votes
 
-# "dobroæ" zmiennych - jak wp³ywaj¹ na prognozê/klasyfikacjê
+# "dobro?" zmiennych - jak wp?ywaj? na prognoz?/klasyfikacj?
 importance(rndForest)
 varImpPlot(rndForest)
 
@@ -239,13 +240,13 @@ treesize(rndForest, terminal=TRUE)
 # pojedyncze drzewo
 getTree(rndForest, k=8, labelVar=TRUE)
 
-# partial plot (wp³yw na logit)
+# partial plot (wp?yw na logit)
 partialPlot(rndForest, casesMod, DPD, "1")
 
 ####################################################################### boosting
 # # http://www-bcf.usc.edu/~gareth/ISL/ # page: 323 (337) algorithm
-# idea: buduj kolejne drzewa, uzupe³niaj¹c informacjê zmiennych objaœniaj¹cych 
-# informacj¹ o wyniku klasyfikacji poprzedniego drzewa
+# idea: buduj kolejne drzewa, uzupe?niaj?c informacj? zmiennych obja?niaj?cych 
+# informacj? o wyniku klasyfikacji poprzedniego drzewa
 # czasmai zwany algorytmem powolnego uczenia
 
 ############################################################################ ada
@@ -269,7 +270,7 @@ summary(boostForest)
 # partial plot
 plot(boostForest, "M_LastPaymentToImportDate")
 
-# przegl¹danie drzew
+# przegl?danie drzew
 pretty.gbm.tree(boostForest, 5)
 
 #
