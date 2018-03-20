@@ -1,13 +1,15 @@
 
 <<<<<<< HEAD
 =======
-
+library(data.table)
 library(rpart)
 library(rpart.plot)
 library(ada)
 library(gbm)
 library(randomForest)
 library(caret)
+
+load("KrukUwr2018.RData")
 
 ## Zadanie 1
 
@@ -20,6 +22,13 @@ library(caret)
 # Zdefiniuj zmienną celu jako pojawienie się wpłaty w pierwszych 6ciu miesięcy obsługi. Następnie podziel zbiór danych 
 # na uczący i testowy w proporcji 70% i 30% zachwoując taki sam rozkład zmiennej celu w zbiorze uczącycm i testowym. 
 # Do wykonania zadania użyj funkcji createDataPartition z pakietu caret
+
+events[is.na(events)] <- 0
+
+dataset_classif <- cases[events][Month<=6, .(IfPayment6M = ifelse(sum(NumberOfPayment)>0, 1, 0)), by = CaseId][cases]
+
+
+
 
 ## Zadanie 3
 
