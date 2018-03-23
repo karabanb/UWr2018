@@ -17,8 +17,6 @@ knitr::opts_chunk$set(echo = TRUE)
 library(data.table)
 library(rpart)
 library(rpart.plot)
-library(ada)
-library(gbm)
 library(randomForest)
 library(caret)
 ```
