@@ -27,9 +27,13 @@ dataset_classif <- cases[events][Month<=6, .(IfPayment6M = ifelse(sum(NumberOfPa
 
 train_ix <- createDataPartition(dataset_classif$IfPayment6M, p= 0.7, list = FALSE)
 
+
+
 mean(dataset_classif[train_ix,]$IfPayment6M)
 mean(dataset_classif[-train_ix,]$IfPayment6M)
 
+cases_train <- dataset_classif[train_ix, -"CaseId"]
+cases_test <- dataset_classif[-train_ix, -"CaseId"]
 
 
 
