@@ -33,7 +33,7 @@ Wykonaj samodzielnie (bez używania dedykowanych pakietów/funkcji) wykres ROC. 
 
 ## Zadanie 2
  
- - Zdefiniuj zmienną celu `IfPayment6M` jako pojawienie się wpłaty w pierwszych 6ciu miesięcach obsługi dla każdego CaseId. 
+ - Zdefiniuj zmienną celu `IfPayment6M` jako pojawienie się wpłaty w pierwszych 6ciu miesięcach obsługi dla każdego CaseId. Poza nowo utworzoną zmienną zachowaj tylko i wyłącznie dane z tabeli cases.
  - Następnie podziel zbiór danych przy użyciu funkcji `createDataPartition` z pakietu `caret` na uczący i testowy w proporcji 70% i 30%.
  - Zachowaj tylko właściwe zmienne i skonwertuj do innego typu danych jeżeli jest taka potrzeba.
  - Podzielony i przygotowane zbiory danych zapisz jako `cases_train` i `cases_test`
@@ -42,10 +42,10 @@ Wykonaj samodzielnie (bez używania dedykowanych pakietów/funkcji) wykres ROC. 
 
 ## Zadanie 3
 
-Utwórz drzewo klasyfikacyjne do modelowania zjawiska dokonania wpłaty w  pierwszych 6 miesięcy obsługi. Zadanie wykonaj wykorzystując pakiet `rpart`.
-
-Wygeneruj wizualzację drzewa przy użyciu pakietu `rpart.plot`.
-
+Utwórz drzewo klasyfikacyjne do modelowania zjawiska dokonania wpłaty w  pierwszych 6 miesięcy obsługi. Skorzystaj z przygotowanych danych z zadania 2. Zadanie wykonaj wykorzystując pakiet `rpart`. 
+- Ile węzłów zawiera wygenerowane drzewo?
+- Wyśietl podsumowanie dla zbudowanego modelu.
+- Wygeneruj wizualzację drzewa przy użyciu pakietu `rpart.plot`.
 
 ## Zadanie 4
 
@@ -77,4 +77,6 @@ dla wszystkich kombinacji wartości parametrów `maxdepth = seq(2,6,1)`, `minspl
 Do zbudowania siatki kombinacji wartości parametrów użyj funkcji `expand.grid`.
 
 ## Zadanie 10
+
+Zbuduj po jednym modelu klasyfikacyjnym i regresyjnym metodą lasów losowych (pakiet `randomForest`). Czy wyniki uzyskane tą metodą są lepsze od najlepszych uzyskanych w zadaniach 6 i 9 (stosując odpowiednio kryterium RMSE i AUC)
 
