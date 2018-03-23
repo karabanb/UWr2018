@@ -1,11 +1,11 @@
 ---
-title: "Laboratorium 5"
-author: "Bartlomiej Karaban"
-date: "20 03 2018"
+title: "Modelowanie Statystyczne w Zarządzaniu Wierzytelnościami Masowymi"
 output:
   pdf_document: default
   html_document: default
 ---
+
+# Laboratorium 5
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
