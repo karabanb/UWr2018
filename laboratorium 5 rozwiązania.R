@@ -38,9 +38,6 @@ dataset_classif <- cases[events][Month<=6, .(IfPayment6M = ifelse(sum(NumberOfPa
 
 train_ix <- createDataPartition(dataset_classif$IfPayment6M, p= 0.7, list = FALSE)
 
-
-<<<<<<< HEAD
-=======
 #  Zachowaj tylko właściwe zmienne i skonwertuj do innego typu danych jeżeli jest taka potrzeba.
 
 dataset_classif[, Land := as.factor(Land)][ , CaseId := NULL]
@@ -52,7 +49,6 @@ cases_test <- dataset_classif[-train_ix, ]
 
 
 # - Sprawdź jak wygląda rozkład zmiennej celu `IfPayment6M` w zbiorze uczącym i testowym.
->>>>>>> 6cb4f2ec207f809c48b2848c969da55da67da144
 
 mean(dataset_classif[train_ix,]$IfPayment6M)
 mean(dataset_classif[-train_ix,]$IfPayment6M)
