@@ -15,6 +15,14 @@ load("KrukUwr2018.RData")
 # Wykonaj samodzielnie (bez używania dedykowanych pakietów/funkcji) wykres ROC. 
 # Wejściem będzie wektor prawdopodobieństw i wektor oznaczeń good/bad.
 
+roc_plot <- function(GoodBad, Scores){
+  tmp <- data.table(GoodBad = GoodBad, Score = Scores)[order(-Score)]
+  tmp[,`:=`(TPR = cumsum(GoodBad)/sum(GoodBad), FPR = cumsum(!GoodBad)/sum(!GoodBad))]
+  plot(tmp$FPR, tmp$TPR, type = "l", ylab = "sensitivity", xlab = "specifity")
+  
+}
+
+
 ## Zadanie 2
 
 # Zdefiniuj zmienną celu jako pojawienie się wpłaty w pierwszych 6ciu miesięcy obsługi. Następnie podziel zbiór danych 
