@@ -25,27 +25,45 @@ roc_plot <- function(GoodBad, Scores){
 
 ## Zadanie 2
 
-# Zdefiniuj zmienną celu jako pojawienie się wpłaty w pierwszych 6ciu miesięcy obsługi. Następnie podziel zbiór danych 
-# na uczący i testowy w proporcji 70% i 30% zachwoując taki sam rozkład zmiennej celu w zbiorze uczącycm i testowym. 
-# Do wykonania zadania użyj funkcji createDataPartition z pakietu caret
+#  - Zdefiniuj zmienną celu `IfPayment6M` jako pojawienie się wpłaty w pierwszych 6ciu miesięcach 
+# obsługi dla każdego CaseId. Poza nowo utworzoną zmienną zachowaj tylko i wyłącznie dane z tabeli cases.
+
 
 events[is.na(events)] <- 0
-
 dataset_classif <- cases[events][Month<=6, .(IfPayment6M = ifelse(sum(NumberOfPayment)>0, 1, 0)), by = CaseId][cases]
 
+# Następnie podziel zbiór danych przy użyciu funkcji `createDataPartition` z pakietu `caret` 
+# na uczący i testowy w proporcji 70% i 30%.
+
+
 train_ix <- createDataPartition(dataset_classif$IfPayment6M, p= 0.7, list = FALSE)
+
+
+#  Zachowaj tylko właściwe zmienne i skonwertuj do innego typu danych jeżeli jest taka potrzeba.
+
+dataset_classif[, Land := as.factor(Land)][ , CaseId := NULL]
+
+# - Podzielony i przygotowane zbiory danych zapisz jako `cases_train` i `cases_test`
+
+cases_train <- dataset_classif[train_ix, ]
+cases_test <- dataset_classif[-train_ix, ]
+
+
+# - Sprawdź jak wygląda rozkład zmiennej celu `IfPayment6M` w zbiorze uczącym i testowym.
 
 mean(dataset_classif[train_ix,]$IfPayment6M)
 mean(dataset_classif[-train_ix,]$IfPayment6M)
 
 
 
-
 ## Zadanie 3
 
-# Utwórz drzewo klasyfikacyjne do modelowania zjawiska czy w sprawie pojawi się 
-# wpłata w ciągu pierwszych 6 miesięcy obsługi. Zadanie wykonaj wykorzystując
-# pakiet rpart.
+# Utwórz drzewo klasyfikacyjne do modelowania zjawiska dokonania wpłaty w  pierwszych 6 miesięcy obsługi. 
+# Skorzystaj z przygotowanych danych z zadania 2. Zadanie wykonaj wykorzystując pakiet `rpart`. 
+
+tree1 <- rpart(IfPayment6M~., data = cases_train, method = "class")
+
+
 
 ## Zadanie 4
 
