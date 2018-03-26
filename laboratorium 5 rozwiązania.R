@@ -50,11 +50,8 @@ cases_test <- dataset_classif[-train_ix, ]
 
 # - Sprawdź jak wygląda rozkład zmiennej celu `IfPayment6M` w zbiorze uczącym i testowym.
 
-mean(dataset_classif[train_ix,]$IfPayment6M)
-mean(dataset_classif[-train_ix,]$IfPayment6M)
-
-cases_train <- dataset_classif[train_ix, -"CaseId"]
-cases_test <- dataset_classif[-train_ix, -"CaseId"]
+mean(cases_train$IfPayment6M)
+mean(cases_test$IfPayment6M)
 
 
 ## Zadanie 3
@@ -71,20 +68,41 @@ tree1 <- rpart(IfPayment6M~., data = cases_train, method = "class")
 # Zmodyfikuj drzewo klasyfikacyjne z poprzedniego zadania zmieniając wartości parametrów cp, maxdepth, minsplit. 
 # Co można zauważyć?
 
+controls <- rpart.control(minsplit = 10, cp = 0.0001)
+
+tree2 <- rpart(IfPayment6M~., data = cases_train, method = "class", control = controls)
+
+
 ## Zadanie 5
 
 # Wygeneruj macierz konfuzji dla wybranego przez Ciebie drzewa dla zbioru uczącego i testowego. 
 # Jak kształtują się miary Accuracy, Precision i Sensitivity w obydwu macierzach?
 
+pred_train <- predict(tree2, newdata = cases_train, type = "class")
+pred_test <- predict(tree2, newdata = cases_test, type = "class")
+
+confusionMatrix(pred_train, cases_train$IfPayment6M)
+
+confusionMatrix(pred_test, cases_test$IfPayment6M)
+
 ## Zadanie 6
 
 ## Wygeneruj wykres ROC dla zbioru uczącego i testowego za pomocą napisanej przez Ciebie funkcji z zadania 1.
+
+pred_train_prob <- predict(tree2, newdata = cases_train, type = "prob")
+
+roc_plot(GoodBad = cases_train$IfPayment6M, Scores = pred_train_prob[,2])
+
+
+
 
 
 ## Zadanie 7
 
 # Zbuduj drzewo regresyjne w oparciu o dane aplikacyjne i behawioralne z pierwszych trzech miesięcy i 
 # oszacuj skuteność skumulowaną od 4 do 12 miesiąca obsługi..
+
+
 
 ## Zadanie 8
 
