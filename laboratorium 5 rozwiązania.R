@@ -6,6 +6,7 @@ library(ada)
 library(gbm)
 library(randomForest)
 library(caret)
+library(Metrics)
 
 load("KrukUwr2018.RData")
 
@@ -18,7 +19,7 @@ load("KrukUwr2018.RData")
 roc_plot <- function(GoodBad, Scores){
   tmp <- data.table(GoodBad = GoodBad, Score = Scores)[order(-Score)]
   tmp[,`:=`(TPR = cumsum(GoodBad)/sum(GoodBad), FPR = cumsum(!GoodBad)/sum(!GoodBad))]
-  plot(tmp$FPR, tmp$TPR, type = "l", ylab = "sensitivity", xlab = "specifity")
+  plot(tmp$FPR, tmp$TPR, type = "l", ylab = "TPR", xlab = "FPR")
   
 }
 
@@ -101,11 +102,11 @@ pred_tst_class <- lapply(trees_list, predict, newdata = cases_test, type = "clas
 # drzewa z poprzedniego zadania dla zbioru uczącego i testowego. 
 # Jak kształtują się miary Accuracy, Precision i Sensitivity w obydwu macierzach?
 
-confusionMatrix(pred_tr_list$t1, cases_train$IfPayment6M)
-confusionMatrix(pred_tst_list$t1, cases_test$IfPayment6M)
+confusionMatrix(pred_tr_class$t1, cases_train$IfPayment6M)
+confusionMatrix(pred_tst_class$t1, cases_test$IfPayment6M)
 
-confusionMatrix(pred_tr_list$t3, cases_train$IfPayment6M)
-confusionMatrix(pred_tst_list$t3, cases_test$IfPayment6M)
+confusionMatrix(pred_tr_class$t3, cases_train$IfPayment6M)
+confusionMatrix(pred_tst_class$t3, cases_test$IfPayment6M)
 
 
 ## Zadanie 7
@@ -134,13 +135,34 @@ cases_behav[, CaseId :=  NULL]
 tree4 <- rpart(SR12m ~., data = cases_behav, method = "anova")
 
 
-
-
-
 ## Zadanie 9 
 
-## Dla wygenerowanych w zadaniu 6 drzew porównaj błądd RMSE dla każdego z drzew na zbiorze treningowym i testowym. 
-## Wskaż przy jakiej kombinacji parametrów uzyskujemy najlepszą jakość modelu mierzoną RMSE. 
+# Zbuduj drzewa regresyjne do modelowania tego samego problemu jak w zadaniu 7. Tym razem modeluj
+# dla wszystkich kombinacji wartości parametrów `maxdepth = seq(2,6,1)`, `minsplit = c(500,1000,5000)`
+# 
+# Do zbudowania siatki kombinacji wartości parametrów użyj funkcji `expand.grid`.
+
+train_ix <- createDataPartition(cases_behav$SR12m, p = 0.7, list = FALSE)
+
+grid <- expand.grid(maxdepth = c(2:6), minsplit = c(500, 1000, 5000))
+
+trees_parms <- list()
+
+ for (i in 1:nrow(grid)) {
+   
+   minsplit <- grid$minsplit[i]
+   maxdepth <- grid$maxdepth[i]
+   
+   
+   trees_parms[[i]]<- rpart(SR12m~.,
+                            data = cases_behav,
+                            subset = train_ix,
+                            method = "anova",
+                            minsplit = minsplit,
+                            maxdepth = maxdepth,
+                            cp = 0.0001)
+   
+ }
 
 
 ## Zadanie 10
@@ -148,7 +170,16 @@ tree4 <- rpart(SR12m ~., data = cases_behav, method = "anova")
 #  Do modelowania tego samego problemu regersyjnego użyj lasu losowego z pakietu randomForest. 
 # Czy przy domyślnych parametrach wynik mierzony miarą RMSE jest lepszy od najlepszego wyniku z zdania 9?
 
-## Zadanie 11
+# dla ulatwienia uzywamy tylko kompeltnych obserwacji
 
-## 
+
+
+
+
+las <- randomForest(SR12m ~. ,
+                    data = na.omit(cases_behav),
+                    subset = train_ix
+                    )
+
+
 
