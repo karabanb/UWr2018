@@ -172,13 +172,19 @@ trees_parms <- list()
 
 # dla ulatwienia uzywamy tylko kompeltnych obserwacji
 
+cases_behav <- na.omit(cases_behav)
 
+cases_behav[ , `:=`(Product = as.factor(Product),
+                    Land = as.factor(Land),
+                    Gender = as.factor(Gender))
+            ]
 
+train_ix <- createDataPartition(cases_behav$SR12m, p = 0.7, list = FALSE)
 
+cases_behav_tr <- cases_behav[-train_ix, ]
 
-las <- randomForest(SR12m ~. ,
-                    data = na.omit(cases_behav),
-                    subset = train_ix
+las <- randomForest(formula = SR12m ~ .,
+                    data = cases_behav_tr
                     )
 
 
