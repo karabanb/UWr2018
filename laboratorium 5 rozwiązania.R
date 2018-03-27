@@ -58,9 +58,13 @@ mean(cases_test$IfPayment6M)
 
 # Utwórz drzewo klasyfikacyjne do modelowania zjawiska dokonania wpłaty w  pierwszych 6 miesięcy obsługi. 
 # Skorzystaj z przygotowanych danych z zadania 2. Zadanie wykonaj wykorzystując pakiet `rpart`. 
+# - Ile węzłów zawiera wygenerowane drzewo?
+# - Wyśietl podsumowanie dla zbudowanego modelu.
+# - Wygeneruj wizualzację drzewa przy użyciu pakietu `rpart.plot`.
 
 tree1 <- rpart(IfPayment6M~., data = cases_train, method = "class")
-
+summary(tree1)
+rpart.plot(tree1)
 
 
 ## Zadanie 4
@@ -70,46 +74,68 @@ tree1 <- rpart(IfPayment6M~., data = cases_train, method = "class")
 
 controls <- rpart.control(minsplit = 10, cp = 0.0001)
 
-tree2 <- rpart(IfPayment6M~., data = cases_train, method = "class", control = controls)
+tree2 <- rpart(IfPayment6M~., data = cases_train, method = "class", control = rpart.control(minsplit = 100, cp = 0.0001))
+tree3 <-rpart(IfPayment6M~., data = cases_train, method = "class", control = rpart.control(minsplit = 10, cp = 0.0001))
+
+trees_list <- list(t1 = tree1, t2 = tree2, t3 = tree3)
+
+sapply(trees_list, plot) 
+sapply(trees_list, plotcp)
 
 
 ## Zadanie 5
 
-# Wygeneruj macierz konfuzji dla wybranego przez Ciebie drzewa dla zbioru uczącego i testowego. 
-# Jak kształtują się miary Accuracy, Precision i Sensitivity w obydwu macierzach?
+# Dokonaj predykcji klasy na podstawie zbudowanych modeli drzew zarówno dla zbioru uczącego jak i testowego
+# Wyniki zapisz do zmiennych
 
-pred_train <- predict(tree2, newdata = cases_train, type = "class")
-pred_test <- predict(tree2, newdata = cases_test, type = "class")
+# pred_train_class <- predict(tree2, newdata = cases_train, type = "class")
+# pred_test_class <- predict(tree2, newdata = cases_test, type = "class")
 
-confusionMatrix(pred_train, cases_train$IfPayment6M)
+pred_tr_class <- lapply(trees_list, predict, newdata = cases_train, type = "class")
+pred_tst_class <- lapply(trees_list, predict, newdata = cases_test, type = "class")
 
-confusionMatrix(pred_test, cases_test$IfPayment6M)
 
 ## Zadanie 6
 
-## Wygeneruj wykres ROC dla zbioru uczącego i testowego za pomocą napisanej przez Ciebie funkcji z zadania 1.
+# Wygeneruj macierz konfuzji przy użyciu funkcji `confusionMatrix` z pakietu `caret` dla najbardziej i najmniej złożonego 
+# drzewa z poprzedniego zadania dla zbioru uczącego i testowego. 
+# Jak kształtują się miary Accuracy, Precision i Sensitivity w obydwu macierzach?
 
-pred_train_prob <- predict(tree2, newdata = cases_train, type = "prob")
+confusionMatrix(pred_tr_list$t1, cases_train$IfPayment6M)
+confusionMatrix(pred_tst_list$t1, cases_test$IfPayment6M)
 
-roc_plot(GoodBad = cases_train$IfPayment6M, Scores = pred_train_prob[,2])
-
-
-
+confusionMatrix(pred_tr_list$t3, cases_train$IfPayment6M)
+confusionMatrix(pred_tst_list$t3, cases_test$IfPayment6M)
 
 
 ## Zadanie 7
 
-# Zbuduj drzewo regresyjne w oparciu o dane aplikacyjne i behawioralne z pierwszych trzech miesięcy i 
-# oszacuj skuteność skumulowaną od 4 do 12 miesiąca obsługi..
+# Wygeneruj wykres ROC dla zbioru uczącego i testowego za pomocą napisanej przez Ciebie funkcji z zadania 1.
 
+# do generowania krzywej ROC muismy znac prawdopodobienstwa
+
+pred_tr_prob <- lapply(trees_list, predict, newdata = cases_train, type = "prob") 
+pred_tst_prob <- lapply(trees_list, predict, newdata = cases_test, type = "prob")
+
+roc_plot(GoodBad = cases_train$IfPayment6M, Scores = pred_tr_prob$t3[,2]) # ROC dla treningowego
+roc_plot(GoodBad = cases_test$IfPayment6M, Scores = pred_tst_prob$t3[,2]) # ROC dla testowego
 
 
 ## Zadanie 8
 
-# Zbuduj drzewa regresyjne do modelowania tego samego problemu jak w zadaniu 7. Tym razem modeluj
-# dla wszystkich kombinacji wartości parametrów .....
+# Zbuduj drzewo regresyjne w oparciu o dane aplikacyjne i behawioralne z pierwszych trzech miesięcy i 
+# oszacuj skuteność skumulowaną od 4 do 12 miesiąca obsługi.
 
-# Do zbudowania siatki kombinacji użyj funkcji expand.grid. 
+tmp1 <- cases[events][Month > 3, .(SR12m = sum(PaymentAmount)/max(TOA)), by = CaseId] # okreslamy zmienną celu
+cases_behav <- events[Month <= 3, lapply(.SD, sum), by = CaseId, .SDcols = setdiff(names(events),c("Month", "CaseId"))][cases][tmp1]
+cases_behav[, CaseId :=  NULL]
+# behawior do 3M
+
+tree4 <- rpart(SR12m ~., data = cases_behav, method = "anova")
+
+
+
+
 
 ## Zadanie 9 
 
