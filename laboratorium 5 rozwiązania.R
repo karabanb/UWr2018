@@ -16,11 +16,11 @@ load("KrukUwr2018.RData")
 # Wykonaj samodzielnie (bez używania dedykowanych pakietów/funkcji) wykres ROC. 
 # Wejściem będzie wektor prawdopodobieństw i wektor oznaczeń good/bad.
 
+
 roc_plot <- function(GoodBad, Scores){
   tmp <- data.table(GoodBad = GoodBad, Score = Scores)[order(-Score)]
   tmp[,`:=`(TPR = cumsum(GoodBad)/sum(GoodBad), FPR = cumsum(!GoodBad)/sum(!GoodBad))]
-  plot(tmp$FPR, tmp$TPR, type = "l", ylab = "TPR", xlab = "FPR")
-  
+  plot(tmp$FPR, tmp$TPR, type = "l", ylab = "TPR", xlab = "FPR", xlim = c(0, 1), ylim = c(0, 1))
 }
 
 
