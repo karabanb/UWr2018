@@ -18,6 +18,34 @@ rocplot <- function(pred, truth, ...) {
   plot(perf, main=paste0("Gini index: ", round(gini, 2)))
 }
 
+
+# Przykład ROC (na fingerach)
+dane <- data.table(
+  Sth=LETTERS[1:6], 
+  Pr=seq(from=1, to=0, length.out=6), # złe sortowanie było na wykładzie
+  ActualGdBd=c(1, 1, 1, 0, 1, 0)
+)
+setDT(dane, key="Sth") 
+
+# sensitivity = true positive rate = TP/P = TP/(TP + FN)
+# specificity = true negative rate = TN/N = TN/(FP + TN)
+# 1 - specificity = false positive rate = 1 - TN/N = FP/N 
+
+dane[, `:=`(
+  GdSum=cumsum(ActualGdBd),
+  BdSum=cumsum(1 - ActualGdBd)
+)] 
+
+dane[, `:=`(
+  TPR=GdSum/max(dane$GdSum),
+  FPR=BdSum/max(dane$BdSum)
+)]
+
+rocplot(dane$Pr, dane$ActualGdBd)
+points(dane$FPR, dane$TPR, col="tomato", pch=19, cex=5)
+text(dane$FPR, dane$TPR, dane$Sth)
+
+
 setwd("C:/Users/gchlapinski/Desktop/Rrroboczy/UWr")
 load("KrukUWr2018.RData")
 
