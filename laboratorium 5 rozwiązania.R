@@ -10,8 +10,8 @@ library(Metrics)
 
 load("KrukUwr2018.RData")
 
+set.seed(1234)
 ## Zadanie 1
-
 
 # Wykonaj samodzielnie (bez używania dedykowanych pakietów/funkcji) wykres ROC. 
 # Wejściem będzie wektor prawdopodobieństw i wektor oznaczeń good/bad.
@@ -41,19 +41,19 @@ train_ix <- createDataPartition(dataset_classif$IfPayment6M, p= 0.7, list = FALS
 
 #  Zachowaj tylko właściwe zmienne i skonwertuj do innego typu danych jeżeli jest taka potrzeba.
 
-dataset_classif[, Land := as.factor(Land)][ , CaseId := NULL]
+cols <- c("Land", "Gender", "Product", "ExternalAgency", "Bailiff", "ClosedExecution")
+dataset_classif[, (cols) := lapply(.SD, as.factor), .SDcols = cols]
+dataset_classif[, CaseId := NULL]
 
 # - Podzielony i przygotowane zbiory danych zapisz jako `cases_train` i `cases_test`
 
 cases_train <- dataset_classif[train_ix, ]
 cases_test <- dataset_classif[-train_ix, ]
 
-
 # - Sprawdź jak wygląda rozkład zmiennej celu `IfPayment6M` w zbiorze uczącym i testowym.
 
-mean(cases_train$IfPayment6M)
-mean(cases_test$IfPayment6M)
-
+round(prop.table(table(cases_train$IfPayment6M)), 3)
+round(prop.table(table(cases_test$IfPayment6M)), 3)
 
 ## Zadanie 3
 
@@ -73,24 +73,26 @@ rpart.plot(tree1)
 # Zmodyfikuj drzewo klasyfikacyjne z poprzedniego zadania zmieniając wartości parametrów cp, maxdepth, minsplit. 
 # Co można zauważyć?
 
-controls <- rpart.control(minsplit = 10, cp = 0.0001)
+#controls <- rpart.control(minsplit = 10, cp = 0.0001)
 
-tree2 <- rpart(IfPayment6M~., data = cases_train, method = "class", control = rpart.control(minsplit = 100, cp = 0.0001))
-tree3 <-rpart(IfPayment6M~., data = cases_train, method = "class", control = rpart.control(minsplit = 10, cp = 0.0001))
+tree2 <- rpart(IfPayment6M~., data = cases_train, method = "class", control = rpart.control(minsplit = 1000, cp = 0.0001))
+tree3 <-rpart(IfPayment6M~., data = cases_train, method = "class", control = rpart.control(minsplit = 100, cp = 0.0001))
 
-trees_list <- list(t1 = tree1, t2 = tree2, t3 = tree3)
+trees_list <- list(t1 = tree1, t2 = tree2, t3 = tree3) # zapisujemy wygenerowane modele do listy
 
-sapply(trees_list, plot) 
-sapply(trees_list, plotcp)
+par(mfrow = c(2, 2))
 
+sapply(trees_list, plot)  #wizualizacja utworzonych drzew
+
+par(mfrow = c(2, 2))
+sapply(trees_list, plotcp) # wizualzacja warotsci bledu w konstekscie wzrostu zlozonosci drzewa
+
+dev.off()
 
 ## Zadanie 5
 
 # Dokonaj predykcji klasy na podstawie zbudowanych modeli drzew zarówno dla zbioru uczącego jak i testowego
 # Wyniki zapisz do zmiennych
-
-# pred_train_class <- predict(tree2, newdata = cases_train, type = "class")
-# pred_test_class <- predict(tree2, newdata = cases_test, type = "class")
 
 pred_tr_class <- lapply(trees_list, predict, newdata = cases_train, type = "class")
 pred_tst_class <- lapply(trees_list, predict, newdata = cases_test, type = "class")
@@ -102,11 +104,11 @@ pred_tst_class <- lapply(trees_list, predict, newdata = cases_test, type = "clas
 # drzewa z poprzedniego zadania dla zbioru uczącego i testowego. 
 # Jak kształtują się miary Accuracy, Precision i Sensitivity w obydwu macierzach?
 
-confusionMatrix(pred_tr_class$t1, cases_train$IfPayment6M)
-confusionMatrix(pred_tst_class$t1, cases_test$IfPayment6M)
+confusionMatrix(pred_tr_class$t1, as.factor(cases_train$IfPayment6M)) 
+confusionMatrix(pred_tst_class$t1, as.factor(cases_test$IfPayment6M))
 
-confusionMatrix(pred_tr_class$t3, cases_train$IfPayment6M)
-confusionMatrix(pred_tst_class$t3, cases_test$IfPayment6M)
+confusionMatrix(pred_tr_class$t3, as.factor(cases_train$IfPayment6M))
+confusionMatrix(pred_tst_class$t3, as.factor(cases_test$IfPayment6M))
 
 
 ## Zadanie 7
@@ -130,7 +132,13 @@ roc_plot(GoodBad = cases_test$IfPayment6M, Scores = pred_tst_prob$t3[,2]) # ROC 
 tmp1 <- cases[events][Month > 3, .(SR12m = sum(PaymentAmount)/max(TOA)), by = CaseId] # okreslamy zmienną celu
 cases_behav <- events[Month <= 3, lapply(.SD, sum), by = CaseId, .SDcols = setdiff(names(events),c("Month", "CaseId"))][cases][tmp1]
 cases_behav[, CaseId :=  NULL]
+
 # behawior do 3M
+cols <- c("Land", "Gender", "Product", "ExternalAgency", "Bailiff", "ClosedExecution")
+cases_behav[, (cols) := lapply(.SD, as.factor), .SDcols = cols]
+
+#dla ulatwienia zostawiamy tylko kompletne sprawy
+cases_behav <- na.omit(cases_behav)
 
 tree4 <- rpart(SR12m ~., data = cases_behav, method = "anova")
 
@@ -170,22 +178,33 @@ trees_parms <- list()
 #  Do modelowania tego samego problemu regersyjnego użyj lasu losowego z pakietu randomForest. 
 # Czy przy domyślnych parametrach wynik mierzony miarą RMSE jest lepszy od najlepszego wyniku z zdania 9?
 
-# dla ulatwienia uzywamy tylko kompeltnych obserwacji
-
-cases_behav <- na.omit(cases_behav)
-
-cases_behav[ , `:=`(Product = as.factor(Product),
-                    Land = as.factor(Land),
-                    Gender = as.factor(Gender))
-            ]
-
-train_ix <- createDataPartition(cases_behav$SR12m, p = 0.7, list = FALSE)
-
-cases_behav_tr <- cases_behav[-train_ix, ]
 
 las <- randomForest(formula = SR12m ~ .,
-                    data = cases_behav_tr
+                    data = cases_behav,
+                    subset = train_ix,
+                    nodesize = 1000 # jednak rezygnuje z wartosci domyslnych
                     )
+
+pr_forest <- predict(las, newdata = cases_behav[-train_ix,]) # prognoza na testowym dla lasu
+pr_trees <- sapply(trees_parms, predict, newdata =cases_behav[-train_ix,]) # prognoza na tesotwym dla kazdego z 15 drzew z zadania 9
+
+zussamen <- cbind(pr_forest, pr_trees) # polaczenie progonzy z zdania 9 i 10
+
+trees_names <- c(paste0("tree_",c(1:length(trees_parms)))) # nazwy dla kolmn prognoz z zadania 9
+colnames(zussamen) <- c("rf",trees_names) # jeszcze dodamy nazwy kolumn, by bylo wiadomo o co loto
+
+
+rmse_all <- c()
+
+for (i in 1: ncol(zussamen)){
+  rmse_all[i] <- rmse(actual = cases_behav[-train_ix]$SR12m, predicted = zussamen[, i])
+  names(rmse_all)[i] <- colnames(zussamen)[i]
+}
+
+sort(rmse_all) 
+
+
+
 
 
 
