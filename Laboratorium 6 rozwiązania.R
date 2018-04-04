@@ -11,7 +11,6 @@ load("KrukUWr2018.RData")
 # w przypadku tej zmiennej oznaczają brak danych? 
 
 
-
 summary(cases$LoanAmount)
 
 # jak można zauwazyć problem dotyczy głownie kart
@@ -42,6 +41,17 @@ lines(density(cases[Product == "Credit card" & LoanAmount < 20000, Principal], n
 
 
 #### Zadanie 2 ######
+
+# Podaj biznesowy (ekspercki) sposób uzupełnienia wartości `NA` dla zmiennej `Other`.
+
+# jak na wykładzie nr 1 .... TOA = Prinicpal + Interest + Other, zatem...
+# Other = TOA - Principal - Interest
+
+cases[is.na(Other), Other := TOA - Principal - Interest]
+
+anyNA(cases[,Other])
+
+#### Zadanie 3 ######
 
 
 
