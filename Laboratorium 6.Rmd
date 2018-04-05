@@ -44,6 +44,6 @@ wartości skrajne.
 ## Zadanie 6
 
 Posługując się wykresami typu boxplot zidentyfikuj wartości odstające (jaka 
-reguła jest przyj?ta w funkcji `boxplot`) na poszczgólnych zmiennych opisujących 
+reguła jest przyjęta w funkcji `boxplot`) na poszczgólnych zmiennych opisujących 
 sprawy. Usuń przypadki z wartościami odstającymi, a następnie wykonaj wykres
 ponownie. Czy nadal możesz zaobserwować wartości odstające?
