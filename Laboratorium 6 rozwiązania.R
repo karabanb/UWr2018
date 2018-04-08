@@ -31,14 +31,16 @@ lines(density(cases[!is.na(LoanAmount) & Product == "Credit card" , Principal]),
 
 # po odcięciu najwyższych 10%
 
-quantile(cases[!is.na(Principal),Principal], probs = seq(0, 1, 0.05))
+q90 <- quantile(cases[!is.na(Principal),Principal], probs = 0.9)
 
-plot(density(cases[Product == "Credit card" & LoanAmount < 20000  , LoanAmount],na.rm = TRUE))
-lines(density(cases[Product == "Credit card" & LoanAmount < 20000, Principal], na.rm = TRUE), col = "red")
+plot(density(cases[Product == "Credit card" & LoanAmount < q90, LoanAmount],na.rm = TRUE))
+lines(density(cases[Product == "Credit card" & LoanAmount < q90, Principal], na.rm = TRUE), col = "red")
 
 
 #### w przypadku kart kredytowych wartośc LoanAmount możemy zastapić Principal #####
 
+cases[Product == "Credit card" & is.na(LoanAmount), LoanAmount := Principal]
+anyNA(cases[Product == "Credit card", LoanAmount]) # sprawdzamy czy w tym zbiorze zostaly NA
 
 #### Zadanie 2 ######
 
