@@ -86,9 +86,31 @@ cases[!is.na(MeanSalary), .(minMeanSalry = min(MeanSalary, na.rm =T),
 
 tmp <- cases[!is.na(MeanSalary), .(MS = min(MeanSalary), GDP= min(GDPPerCapita)), by = Land]
 
-cases <- cases[tmp, on = "Land"]
+### Zadanie 5 ###
+# 
+# Zweryfikuj różnice pomiędzy wartościami średnich oraz przeciętnych dla rozkładów 
+# poszczególnych zmiennych opisujących sprawy. Oceń jaki wpływ na różnice mają 
+# wartości skrajne.
 
-cases[is.na(MeanSalary), ':=' (MeanSalary = MS, GDPPerCapita = GDP)]
-cases[,c("MS","GDP"):=NULL]
+summary(cases)
+
+# Wezmy pod lupe zmienna LoanAmount, tutaj widac ze srednia jest o wiele wieksza niz mediana
+
+plot(density(cases$LoanAmount, na.rm=T))
+boxplot(cases$LoanAmount ~ cases$Product)
+
+cases[,.(avg = mean(LoanAmount, na.rm = TRUE),
+         avg01 = mean(LoanAmount, na.rm = TRUE, trim = 0.01),
+         avg05 = mean(LoanAmount, na.rm = TRUE, trim = 0.05),
+         avg10 = mean(LoanAmount, na.rm = TRUE, trim = 0.1),
+         median = median(LoanAmount, na.rm = TRUE))
+      ]
+
+
+
+
+
+
+
 
 
