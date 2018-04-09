@@ -66,21 +66,29 @@ barplot(land_distribution) #wizualizacja
 
 # probkowanie z rozkladu Land
 
-sampled <- sample(land_distribution$V1,
+sampled <- sample(unique(cases[!is.na(Land),Land]),
                   size = sum(is.na(cases$Land)),
-                  prob = land_distribution$N,
+                  prob = land_distribution,
                   replace = TRUE)
 
-cases[is.na(Land), Land:= as.integer(sampled)] # zastapienie brakow danych 
+cases[is.na(Land), Land:= sampled] # zastapienie brakow danych 
 
 anyNA(cases$Land) #nie ma juz NA's
 
 # Prosze zauwazyc, ze kazdy Land ma przypisana 1 wartosc MeanSalary i GDPPerCapita, 
 # przyklad: wartosc min i max dla interesujacych nas cech jest taka sama
 
-cases[!is.na(MeanSalary), .(unqMeanSalry = unique(MeanSalary, na.rm =T))
-          # maxMeanSalry = max(MeanSalary, na.rm = T),
-          # minGDPPerCapita = min(GDPPerCapita, na.rm =T),
-          # maxGDPPerCapita = max(GDPPerCapita, na.rm = T)),
+cases[!is.na(MeanSalary), .(minMeanSalry = min(MeanSalary, na.rm =T),
+          maxMeanSalry = max(MeanSalary, na.rm = T),
+          minGDPPerCapita = min(GDPPerCapita, na.rm =T),
+          maxGDPPerCapita = max(GDPPerCapita, na.rm = T))
           , by = Land]
+
+tmp <- cases[!is.na(MeanSalary), .(MS = min(MeanSalary), GDP= min(GDPPerCapita)), by = Land]
+
+cases <- cases[tmp, on = "Land"]
+
+cases[is.na(MeanSalary), ':=' (MeanSalary = MS, GDPPerCapita = GDP)]
+cases[,c("MS","GDP"):=NULL]
+
 
