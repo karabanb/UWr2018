@@ -107,6 +107,32 @@ cases[,.(avg = mean(LoanAmount, na.rm = TRUE),
       ]
 
 
+### Zadanie 6 #####
+
+# Posługując się wykresami typu boxplot zidentyfikuj wartości odstające (jaka 
+# reguła jest przyjęta w funkcji `boxplot`) na poszczgólnych zmiennych opisujących 
+# sprawy. Usuń przypadki z wartościami odstającymi, a następnie wykonaj wykres
+# ponownie. Czy nadal możesz zaobserwować wartości odstające?
+
+str(cases) # sprawdzmy jakie typy danych mamy w ramce i gdzie boxplot ma sens
+
+# wybieramy te sensowne:
+cols.choosen <- setdiff(names(cases),
+                        c("CaseId",
+                          "Product", "Gender", # cechy kategoryczne
+                          "ExternalAgency", "Bailiff", "ClosedExecution", #tak naprawde cechy logiczne
+                          "Land" #tak naprawde cecha kategoryczna
+                        ))
+
+
+str(cases[,.SD, .SDcols=cols.choosen])
+
+
+boxplots <- list()
+for (i in cols.choosen){
+  boxplots[[i]] <- boxplot.default(cases[,.SD, .SDcols= i], main = i)
+}
+
 
 
 
