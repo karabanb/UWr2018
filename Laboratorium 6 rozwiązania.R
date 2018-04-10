@@ -86,6 +86,11 @@ cases[!is.na(MeanSalary), .(minMeanSalry = min(MeanSalary, na.rm =T),
 
 tmp <- cases[!is.na(MeanSalary), .(MS = min(MeanSalary), GDP= min(GDPPerCapita)), by = Land]
 
+
+### Zadanie 4 ###
+
+
+
 ### Zadanie 5 ###
 # 
 # Zweryfikuj różnice pomiędzy wartościami średnich oraz przeciętnych dla rozkładów 
@@ -133,19 +138,22 @@ for (i in cols.choosen){
   boxplots[[i]] <- boxplot(cases[,.SD, .SDcols= i], main = i)
 }
 
-# jaka regula jest przyjeta w box plot?
+##### jaka regula jest przyjeta w box plot? ######
 
 # 1.5 rozstepu miedzykwantylowego (IQR) od 1 i 3 kwantyla
 
 IQR(cases$TOA)
 quantile(cases$TOA)
 
-
 upper_whisker <- min(max(cases$TOA), quantile(cases$TOA)[4]+IQR(cases$TOA)*1.5)
+lower_whisker <- max(min(cases$TOA), quantile(cases$TOA)[2]-IQR(cases$TOA)*1.5)
 
-z <- cases[TOA<IQR(TOA)+m(TOA, na.rm = TRUE),]
+TOA_cut <- cases[TOA>lower_whisker & TOA<upper_whisker, TOA]
 
+boxplot(TOA_cut, main = "TOA_cut") # boxplot dalej wykazuje outliery, bo 
 
+IQR(TOA_cut) 
+quantile(TOA_cut)
 
 
 
