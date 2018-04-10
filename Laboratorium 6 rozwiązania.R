@@ -116,7 +116,7 @@ cases[,.(avg = mean(LoanAmount, na.rm = TRUE),
 
 str(cases) # sprawdzmy jakie typy danych mamy w ramce i gdzie boxplot ma sens
 
-# wybieramy te sensowne:
+### wybieramy te sensowne: ####
 cols.choosen <- setdiff(names(cases),
                         c("CaseId",
                           "Product", "Gender", # cechy kategoryczne
@@ -130,9 +130,20 @@ str(cases[,.SD, .SDcols=cols.choosen])
 
 boxplots <- list()
 for (i in cols.choosen){
-  boxplots[[i]] <- boxplot.default(cases[,.SD, .SDcols= i], main = i)
+  boxplots[[i]] <- boxplot(cases[,.SD, .SDcols= i], main = i)
 }
 
+# jaka regula jest przyjeta w box plot?
+
+# 1.5 rozstepu miedzykwantylowego (IQR) od 1 i 3 kwantyla
+
+IQR(cases$TOA)
+quantile(cases$TOA)
+
+
+upper_whisker <- min(max(cases$TOA), quantile(cases$TOA)[4]+IQR(cases$TOA)*1.5)
+
+z <- cases[TOA<IQR(TOA)+m(TOA, na.rm = TRUE),]
 
 
 
