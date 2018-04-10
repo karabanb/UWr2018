@@ -89,7 +89,14 @@ tmp <- cases[!is.na(MeanSalary), .(MS = min(MeanSalary), GDP= min(GDPPerCapita))
 
 ### Zadanie 4 ###
 
+# Zweryfikuj dokadność uzupełniania braków danych dla zmiennej `TOA` poprzez modele
+# lasów losowych i najblizszych sąsiadów (Wsk. Braki danych w `TOA` należy zasymulować).
 
+#### symulujemy braki danych ####
+
+ix_na <- sample(c(1: nrow(cases)), size = 10000)
+
+cases[ix_na, TOA:=NA]
 
 ### Zadanie 5 ###
 # 
