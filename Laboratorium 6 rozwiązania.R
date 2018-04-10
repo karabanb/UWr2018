@@ -1,7 +1,7 @@
 
 
 library(data.table)
-
+library(randomForest)
 
 load("KrukUWr2018.RData")
 
@@ -86,6 +86,9 @@ cases[!is.na(MeanSalary), .(minMeanSalry = min(MeanSalary, na.rm =T),
 
 tmp <- cases[!is.na(MeanSalary), .(MS = min(MeanSalary), GDP= min(GDPPerCapita)), by = Land]
 
+cases[tmp, on = "Land"]
+cases[, ':=']
+
 
 ### Zadanie 4 ###
 
@@ -94,9 +97,11 @@ tmp <- cases[!is.na(MeanSalary), .(MS = min(MeanSalary), GDP= min(GDPPerCapita))
 
 #### symulujemy braki danych ####
 
-ix_na <- sample(c(1: nrow(cases)), size = 10000)
+ix_na <- sample(1: nrow(cases), size = 10000)
 
 cases[ix_na, TOA:=NA]
+
+rnd_frst <- randomForest()
 
 ### Zadanie 5 ###
 # 
