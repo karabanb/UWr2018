@@ -13,7 +13,7 @@ load("KrukUWr2018.RData")
 
 summary(cases$LoanAmount)
 
-# jak można zauwazyć problem dotyczy głownie kart
+#### jak można zauwazyć problem dotyczy głownie kart #####
 cases[,.(.N), by = .(Product, is.na(LoanAmount))][order(Product)] 
 
 # na pierwszy rzut oka wartość Principal jest równa LoanAmount
@@ -86,9 +86,9 @@ cases[!is.na(MeanSalary), .(minMeanSalry = min(MeanSalary, na.rm =T),
 
 tmp <- cases[!is.na(MeanSalary), .(MS = min(MeanSalary), GDP= min(GDPPerCapita)), by = Land]
 
-cases[tmp, on = "Land"]
-cases[, ':=']
-
+cases <- cases[tmp, on = "Land"]
+cases[, ':='(MeanSalary = MS, GDPPerCapita = GDP)]
+cases[,':='(MS = NULL, GDP = NULL)]
 
 ### Zadanie 4 ###
 
@@ -97,11 +97,11 @@ cases[, ':=']
 
 #### symulujemy braki danych ####
 
-ix_na <- sample(1: nrow(cases), size = 10000)
+# ix_na <- sample(1: nrow(cases), size = 10000)
+# 
+# cases[ix_na, TOA:=NA]
 
-cases[ix_na, TOA:=NA]
-
-rnd_frst <- randomForest()
+#rnd_frst <- randomForest()
 
 ### Zadanie 5 ###
 # 
