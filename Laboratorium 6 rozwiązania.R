@@ -2,6 +2,7 @@
 
 library(data.table)
 library(randomForest)
+library(FNN)
 
 load("KrukUWr2018.RData")
 
@@ -81,8 +82,14 @@ anyNA(cases$Land) #nie ma juz NA's
 cases[!is.na(MeanSalary), .(minMeanSalry = min(MeanSalary, na.rm =T),
           maxMeanSalry = max(MeanSalary, na.rm = T),
           minGDPPerCapita = min(GDPPerCapita, na.rm =T),
-          maxGDPPerCapita = max(GDPPerCapita, na.rm = T))
-          , by = Land]
+          maxGDPPerCapita = max(GDPPerCapita, na.rm = T)),
+          by = Land]
+
+# kazdy land na 1 unikalna wartosc
+
+cases[!is.na(MeanSalary), .(GDP_uniqe_values = length(unique(GDPPerCapita)),
+                            MS_unique_values = length(unique(MeanSalary))),
+      by = Land]
 
 tmp <- cases[!is.na(MeanSalary), .(MS = min(MeanSalary), GDP= min(GDPPerCapita)), by = Land]
 
@@ -90,18 +97,48 @@ cases <- cases[tmp, on = "Land"]
 cases[, ':='(MeanSalary = MS, GDPPerCapita = GDP)]
 cases[,':='(MS = NULL, GDP = NULL)]
 
-### Zadanie 4 ###
+####################################### Zadanie 4 ##################################################
 
 # Zweryfikuj dokadność uzupełniania braków danych dla zmiennej `TOA` poprzez modele
 # lasów losowych i najblizszych sąsiadów (Wsk. Braki danych w `TOA` należy zasymulować).
 
 #### symulujemy braki danych ####
 
-# ix_na <- sample(1: nrow(cases), size = 10000)
-# 
-# cases[ix_na, TOA:=NA]
+ix_na <- sample(1: nrow(cases), size = 10000)
 
-#rnd_frst <- randomForest()
+cases_nas <- cases[ix_na,] # wydzielona ramka dla na
+cases_wna <- cases[-ix_na,] # ramka bez na do budowy modeli
+
+trn_ix <- sample(1:nrow(cases_wna), size = 0.66 *nrow(cases_wna))
+
+cases_trn <- cases_wna[trn_ix,] #ramka do uczenia
+cases_tst <- cases_wna[-trn_ix,] #ramka do testowania
+
+#### uczymy las losowy ####
+
+rndm_frst <- randomForest(TOA~Principal+Interest+Other, data = cases_trn, nodesize = 1000, ntree = 500)
+
+rndm_pred <-predict(rndm_frst, newdata = cases_tst,type = "response")
+
+# obliczamy blad procentowy predyckcji 'Absolute Percentage Error' dla kazdego przypadku 
+# (Grzesiek pokazal Panstwu na wykladzie, z tym ze "krok po kroku", tutaj jest to gotowa funkcja)
+
+blad_rf<-Metrics::ape(cases_tst$TOA, rndm_pred) 
+
+#### uczymy metoda KNN ####
+
+cases_trn_std <- cases_trn[, lapply(.SD, scale), .SDcols = c("TOA", "Principal", "Interest", "Other")]
+cases_tst_std <- cases_tst[, lapply(.SD, scale), .SDcols = c("TOA", "Principal", "Interest", "Other")]
+
+knn <- knn.reg(train = cases_trn_std, test = cases_tst_std, y = cases_trn$TOA, k = 5)
+
+blad_knn <- abs(ape(cases_tst$TOA, knn$pred))
+
+erros <- cbind(blad_rf, blad_knn)
+
+# jak mozemy zauwazyc przy tych parametrach budowy modeli z mniejszym bledem szacowalismy metoda KNN
+
+summary(erros)
 
 ### Zadanie 5 ###
 # 
