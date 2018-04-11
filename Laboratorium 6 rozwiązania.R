@@ -97,9 +97,22 @@ cases[,':='(MS = NULL, GDP = NULL)]
 
 #### symulujemy braki danych ####
 
-# ix_na <- sample(1: nrow(cases), size = 10000)
-# 
-# cases[ix_na, TOA:=NA]
+ix_na <- sample(1: nrow(cases), size = 10000)
+
+cases_nas <- cases[ix_na,] # wydzielona ramka dla na
+cases_wna <- cases[-ix_na,] # ramka bez na do budowy modeli
+
+trn_ix <- sample(1:nrow(cases_wna), size = 0.66 *nrow(cases_wna))
+
+cases_trn <- cases_wna[trn_ix,] #ramka do uczenia
+cases_tst <- cases_wna[-trn_ix,] #ramka do testowania
+
+#### uczymy las losowy ####
+
+rndm_frst <- randomForest(TOA~Principal+Interest+Other, data = cases_trn, nodesize = 1000)
+
+rndm_pred <-predict(rndm_frst, newdata = cases_tst,type = "response")
+
 
 #rnd_frst <- randomForest()
 
