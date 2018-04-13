@@ -116,6 +116,7 @@ cases_tst <- cases_wna[-trn_ix,] #ramka do testowania
 
 #### uczymy las losowy ####
 
+<<<<<<< HEAD
 rndm_frst <- randomForest(TOA~Principal+Interest+Other, data = cases_trn, nodesize = 1000, ntree = 500)
 
 rndm_pred <-predict(rndm_frst, newdata = cases_tst,type = "response")
@@ -137,6 +138,12 @@ blad_knn <- abs(ape(cases_tst$TOA, knn$pred))
 erros <- cbind(blad_rf, blad_knn)
 
 # jak mozemy zauwazyc przy tych parametrach budowy modeli z mniejszym bledem szacowalismy metoda KNN
+=======
+rndm_frst <- randomForest(TOA~Principal+Interest+Other, data = cases_trn, nodesize = 1000)
+
+rndm_pred <-predict(rndm_frst, newdata = cases_tst,type = "response")
+
+>>>>>>> c6e7af0d15786006c711b92a1c8d22c37c427618
 
 summary(erros)
 
