@@ -1,0 +1,40 @@
+---
+title: "Metody Statystyczne w Zarządzaniu Wierzytelnościami Masowymi"
+output: pdf_document
+---
+
+## Laboratorium 8
+
+### Wymagane biblioteki
+
+```{r message=FALSE, warning=FALSE}
+library(data.table)
+library(car)
+library(MASS)
+
+load("KrukUWr2018.RData")
+```
+
+### Zadanie 1
+
+Przygotuj rankę danych `cases_loanamount` bazując na tabeli `cases` z wszystkimi przypadkami kredytów gotówkowych.
+
+## Zadanie 2
+
+Na podstawwie `cases_loanamount` przygotuj ramki danych:
+
+* `cases_loanamount_nas`, która zawiera wszytskie przypadki brakujacych wartości zmiennej `LoanAmount`,
+
+* `cases_loanamount_wonas`, która zawiera kompletne przypadki zmiennej `LoanAmount`.
+
+### Zadanie 2 
+
+Przygotuj ramkę danych `cases_loanamount_wonas` bazując na tabeli `cases`, która zawiera 10 tys. losowych przypadków kredytów gotówkowych, gdzie informacja o wartości `LoanAmount` jest kompletna.
+
+### Zadanie 3
+
+Sprawdź ile braków danych występuje w innych zmiennych ramki danych `cases_loanamount_nas`i ewentualnie zaproponuj metodę zastąpienia tych braków, tam gdzie ma to sens.
+
+### Zadanie 3
+
+Przekoduj wybrane zmienne do odpowienich typów danych
