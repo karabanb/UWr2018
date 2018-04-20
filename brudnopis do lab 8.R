@@ -59,8 +59,19 @@ cases_loanamount[,DPD:=NULL]
 
 rm("sampled", "tmp", "land_distribution")
 
+cases_loanamount_nas <- cases_loanamount[is.na(LoanAmount),]
+cases_loanamount_wonas <- cases_loanamount[!is.na(LoanAmount),]
+ix_trn <- sample(1:nrow(cases_loanamount_wonas), nrow(cases_loanamount_wonas)*0.7)
+ix_tst <- c(1:nrow(cases_loanamount_wonas))[-ix_trn]
 
+summary(cases_loanamount_wonas$LoanAmount)
+boxplot(cases_loanamount_wonas$LoanAmount)
+plot(density(cases_loanamount_wonas$LoanAmount))
 
+cases_loanamount_wonas[LoanAmount==0, LoanAmount:=1]
 
+plot(density(log(cases_loanamount_wonas$LoanAmount)))
 
+fmla <- as.formula(log(LoanAmount)~  TOA + Other + Interest + Principal + D_DPD + Gender + GDPPerCapita+ Age)
 
+m1 <- lm(fmla, data = cases_loanamount_wonas, subset = ix_trn)
