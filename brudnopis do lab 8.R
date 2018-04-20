@@ -8,7 +8,6 @@
 ### liczymy TSS
 ### Liczymy R^2
 
-<<<<<<< HEAD
 ### Liczymy statystyke F i jej przedzal ufnosci
 ### Liczymy statystyke t - istitnosc kazdego wspolczynnika
 
@@ -21,8 +20,7 @@
 ### Sprawdzenie normalnosci rozkladu reszt itp
 
 ### predykkcja
-=======
->>>>>>> 13a5428711dd929b0f9c4f29c2c62b8b8e421797
+
 cases_loanamount <- cases[Product=="Cash loan",]
 
 # przygotuj ramke danych 'cases_loanamount_nas' bazując na tabeli 'cases', która zawieraja
