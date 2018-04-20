@@ -17,9 +17,22 @@ load("KrukUWr2018.RData")
 
 ### Zadanie 1
 
-Przygotuj rankę danych `cases_loanamount` bazując na tabeli `cases` z wszystkimi przypadkami kredytów gotówkowych.
+Przygotuj rankę danych `cases_loanamount` bazując na tabeli `cases` tylko z przypadkami kredytów gotówkowych. 
+
+* Sprawdź miary pozycyjne wszystkich cech w utworzonej ramce.
+
+* Sprawdź liczność braków danych dla wszystkich cech.
+
+
 
 ## Zadanie 2
+
+Interesującą nas cechą będzie `LoanAmount`, której wartość będziemy modelować w celu zastpąpienia `NA's`.
+
+* Metodą losowania z rozkładu zastąp braki danych w cesze `Land`.
+
+* Metodą ekspercką zastąp braki danych w cechach: `Other`,`Gender`, `MeanSalary` i `GDPPerCapita`.
+
 
 Na podstawwie `cases_loanamount` przygotuj ramki danych:
 
