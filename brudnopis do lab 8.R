@@ -8,7 +8,19 @@
 ### liczymy TSS
 ### Liczymy R^2
 
-cases_loanamount_nas <- cases[is.na(LoanAmount)&Product=="Cash loan",]
+### Liczymy statystyke F i jej przedzal ufnosci
+### Liczymy statystyke t - istitnosc kazdego wspolczynnika
+
+### przedzialy ufnosci parametrow modelu
+### sprawdzenie jak dyskretyzowana czy dyskretyzowana cecha moze miec wplyw
+### sprawdzenie interakcji np. ExternalAgency:Gender
+
+### Cooks Distance
+
+### Sprawdzenie normalnosci rozkladu reszt itp
+
+### predykkcja
+cases_loanamount <- cases[Product=="Cash loan",]
 
 # przygotuj ramke danych 'cases_loanamount_nas' bazując na tabeli 'cases', która zawieraja
 # wszytskie przypadki brakujacych danych zmiennej 'LoanAmount' dla kredytów gotówkowych 
