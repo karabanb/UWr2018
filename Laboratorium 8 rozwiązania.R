@@ -80,7 +80,8 @@ plot(density(log(cases_loanamount_wonas$LoanAmount)))
 # Zbuduj model regresji  liniowej `m1` gdzie zmienną modelowaną jest `LoanAmount` a zmiennymi objaśniającymi :
 # `TOA`, `Principal`, `Interest`, `Other`, `GDPPerCapita`, `MeanSalry`, `D_DPD`, `Age`, `Gender` 
  
-fmla <- as.formula(log(LoanAmount)~  TOA + Other + Interest + Principal + D_DPD + Gender + GDPPerCapita+ Age)
+fmla <- as.formula(log(LoanAmount)~  TOA + Other + Interest + Principal + D_DPD + Age + Gender + GDPPerCapita)
+fmla2 <- as.formula(log(LoanAmount)~  TOA + Other + Interest + Principal + D_DPD + GDPPerCapita)
 
 m1 <- lm(fmla, data = cases_loanamount_wonas, subset = ix_trn)
 m1
@@ -93,6 +94,7 @@ plot(m1)
 
 shapiro.test(sample(m1$residuals, 5000))
 
+
 # p-value < 0.05 - odrzucamy hipotezę o normlaności rozkładu
 
 #### Zadanie 7 #####
@@ -101,4 +103,40 @@ shapiro.test(sample(m1$residuals, 5000))
 # a następinie oblicz bez używania gotowych funkcji: RSS, RSE, TSS i R^2.
 
 m1_pred <- predict(m1, newdata = cases_loanamount_wonas[-ix_trn,])
+
+resids <- log(cases_loanamount_wonas[-ix_trn, LoanAmount])- m1_pred
+
+RSS <- sum((resids)^2)
+
+p <- length(m1$coefficients)-1
+n <- nrow(cases_loanamount_wonas[-ix_trn])
+RSE <- sqrt(RSS/(n - p - 1))
+
+TSS <- sum((log(cases_loanamount_wonas$LoanAmount) - mean(log(cases_loanamount_wonas$LoanAmount)))^2)
+
+R2 <- 1 - RSS/TSS
+
+#### Zadanie 8 #####
+
+# Dokonaj oceny jakości predykcji za pomocą znanych Ci miar
+
+# Zmierzymy za pomoca RMSE (Root Mean Square Error) i MAPE (Mean Absolute Percentage Erros)
+
+head(exp(resi))
+
+resids <- cases_loanamount_wonas[-ix_trn, LoanAmount]- exp(m1_pred)
+RMSE <- sqrt(mean(resids^2))
+APE <- abs(resids)/cases_loanamount_wonas[-ix_trn]$LoanAmount
+MAPE <-mean(APE)
+
+### Zadanie 9 ####
+
+# Sprawdź jak obserwacje odstające wpływają na współczynniki modelu oraz na ocenę jakości
+# za pomocą wybranych przez Ciebie miar w zadaniu 9).
+
+library(broom)
+
+broom::augment(m1)
+
+
 
