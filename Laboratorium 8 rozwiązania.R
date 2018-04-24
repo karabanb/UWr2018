@@ -75,13 +75,14 @@ cases_loanamount_wonas[LoanAmount==0, LoanAmount:=1]
 
 plot(density(log(cases_loanamount_wonas$LoanAmount)))
 
+cases_loanamount_wonas[, LoanAmount_log := log(LoanAmount)]
+
 #### Zadanie 5 ####
 
 # Zbuduj model regresji  liniowej `m1` gdzie zmienną modelowaną jest `LoanAmount` a zmiennymi objaśniającymi :
 # `TOA`, `Principal`, `Interest`, `Other`, `GDPPerCapita`, `MeanSalry`, `D_DPD`, `Age`, `Gender` 
  
-fmla <- as.formula(log(LoanAmount)~  TOA + Other + Interest + Principal + D_DPD + Age + Gender + GDPPerCapita)
-fmla2 <- as.formula(log(LoanAmount)~  TOA + Other + Interest + Principal + D_DPD + GDPPerCapita)
+fmla <- as.formula(LoanAmount_log~  TOA + Other + Interest + Principal + D_DPD + Age + Gender + GDPPerCapita)
 
 m1 <- lm(fmla, data = cases_loanamount_wonas, subset = ix_trn)
 m1
@@ -102,32 +103,39 @@ shapiro.test(sample(m1$residuals, 5000))
 # Korzystając ze zbioru testowego dokonaj predykcji (wyniki zapisz w obiekcie `m1_pred`), 
 # a następinie oblicz bez używania gotowych funkcji: RSS, RSE, TSS i R^2.
 
-m1_pred <- predict(m1, newdata = cases_loanamount_wonas[-ix_trn,])
-
-resids <- log(cases_loanamount_wonas[-ix_trn, LoanAmount])- m1_pred
-
-RSS <- sum((resids)^2)
+RSS_trn <- sum(m1$residuals^2)
 
 p <- length(m1$coefficients)-1
 n <- nrow(cases_loanamount_wonas[-ix_trn])
-RSE <- sqrt(RSS/(n - p - 1))
 
-TSS <- sum((log(cases_loanamount_wonas$LoanAmount) - mean(log(cases_loanamount_wonas$LoanAmount)))^2)
+RSE_trn <- sqrt(RSS_trn/(n - p - 1))
+TSS_trn <- sum((cases_loanamount_wonas[ix_trn]$LoanAmount_log - mean(cases_loanamount_wonas[ix_trn]$LoanAmount_log))^2)
+(R2_trn <- 1 - RSS_trn/TSS_trn)
 
-R2 <- 1 - RSS/TSS
+
+m1_pred_tst <- predict.lm(m1, newdata = cases_loanamount_wonas[-ix_trn,])
+rsids_tst <- cases_loanamount_wonas[-ix_trn]$LoanAmount_log - m1_pred_tst
+
+RSS_tst <- sum(rsids_tst^2)
+RSE_tst <- sqrt(RSS_tst/(n - p - 1))
+
+TSS_tst <- sum((cases_loanamount_wonas[-ix_trn]$LoanAmount_log - mean(cases_loanamount_wonas[-ix_trn]$LoanAmount_log))^2)
+
+(R2 <- 1 - RSS_tst/TSS_tst) #zgodnie z oczekiwaniami R^2 gorszy na tesotwym
 
 #### Zadanie 8 #####
 
 # Dokonaj oceny jakości predykcji za pomocą znanych Ci miar
 
-# Zmierzymy za pomoca RMSE (Root Mean Square Error) i MAPE (Mean Absolute Percentage Erros)
+# Zmierzymy za pomoca RMSE (Root Mean Square Error) i MAPE (Mean Absolute Percentage Error)
 
-head(exp(resi))
-
-resids <- cases_loanamount_wonas[-ix_trn, LoanAmount]- exp(m1_pred)
-RMSE <- sqrt(mean(resids^2))
-APE <- abs(resids)/cases_loanamount_wonas[-ix_trn]$LoanAmount
+m1_pred_tst <- exp(m1_pred_tst)
+rsids_tst <- cases_loanamount_wonas[-ix_trn]$LoanAmount - m1_pred_tst
+RMSE <- sqrt(mean(rsids_tst^2))
+APE <- abs(rsids_tst)/cases_loanamount_wonas[-ix_trn]$LoanAmount
+quantile(APE, seq(0, 1, .05))
 MAPE <-mean(APE)
+
 
 ### Zadanie 9 ####
 
@@ -135,8 +143,21 @@ MAPE <-mean(APE)
 # za pomocą wybranych przez Ciebie miar w zadaniu 9).
 
 library(broom)
+library(Metrics)
 
-broom::augment(m1)
+pretty <- data.table(augment(m1))
 
+pretty[order(-.hat)][1:50,] # 20 obserwacji z najwyzszym odcyleniem LoanAmount od sredniej LoanAmount
+outliers <- pretty[order(-.cooksd)][1:50, .rownames] #20 obserwacji z najwiekszym dystansem Cooka
 
+outliers <- as.integer(outliers)
+
+new_ix_trn <- setdiff(ix_trn, outliers)
+
+m2 <- lm(fmla, data = cases_loanamount_wonas, subset = new_ix_trn)
+
+summary(m2)
+plot(m2)
+
+rmse(exp(cases_loanamount_wonas[new_ix_trn]$LoanAmount_log), exp(m2$fitted.values))
 
