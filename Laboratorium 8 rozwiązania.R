@@ -5,7 +5,7 @@ library(MASS)
 load("KrukUWr2018.Rdata")
 
 
-### Zadanie 1
+### Zadanie 1 ####
 
 #  Przygotuj rankę danych `cases_loanamount` bazując na tabeli `cases` tylko z przypadkami kredytów gotówkowych. 
 
@@ -19,7 +19,7 @@ summary(cases_loanamount)
 
 sapply(cases_loanamount, function(x){sum(is.na(x))})
 
-### Zadanie 2 
+#### Zadanie 2 ####
 
 # Interesującą nas cechą będzie `LoanAmount`, której wartość będziemy modelować w celu zastpąpienia `NA's`.
 
@@ -47,25 +47,58 @@ sapply(cases_loanamount, function(x){sum(is.na(x))})
 
  cases_loanamount[, D_DPD := cut(DPD, breaks = c(0,180, 360, 720, Inf))]
  
- cases_loanamount[is.na(D_DPD), "D_DPD"] <- "brak danych"
- cases_loanamount[,DPD:=NULL]
+cases_loanamount[is.na(D_DPD), "D_DPD"] <- "brak danych"
+cases_loanamount[,DPD:=NULL]
  
- ### Zadanie 3 
+ #### Zadanie 3 ####
  
  # Na podstawie `cases_loanamount` przygotuj ramki danych:
 
  #   * `cases_loanamount_nas`, która zawiera wszystkie przypadki brakujacych wartości zmiennej `LoanAmount`.
  
- cases_loanamount_nas <- cases_loanamount[is.na(LoanAmount),]
- cases_loanamount_wonas <- cases_loanamount[!is.na(LoanAmount),]
+cases_loanamount_nas <- cases_loanamount[is.na(LoanAmount),]
+cases_loanamount_wonas <- cases_loanamount[!is.na(LoanAmount),]
+cases_loanamount_wonas <- cases_loanamount_wonas[sample(1:nrow(cases_loanamount_wonas), 10000),]
  
- ix_trn <- sample(1:nrow(cases_loanamount_wonas), nrow(cases_loanamount_wonas)*0.7)
- ix_tst <- c(1:nrow(cases_loanamount_wonas))[-ix_trn]
+ix_trn <- sample(1:nrow(cases_loanamount_wonas), nrow(cases_loanamount_wonas)*0.7)
+ix_tst <- c(1:nrow(cases_loanamount_wonas))[-ix_trn]
+
+#### Zadanie 4 ####
+
+# Zbadaj rozkład  `cases_loanamount_wonas$LoanAmount`. Jeżeli jest taka potrzeba zaproponuj transformację. 
  
+summary(cases_loanamount_wonas$LoanAmount)
+boxplot(cases_loanamount_wonas$LoanAmount)
+plot(density(cases_loanamount_wonas$LoanAmount))
+
+cases_loanamount_wonas[LoanAmount==0, LoanAmount:=1]
+
+plot(density(log(cases_loanamount_wonas$LoanAmount)))
+
+#### Zadanie 5 ####
+
+# Zbuduj model regresji  liniowej `m1` gdzie zmienną modelowaną jest `LoanAmount` a zmiennymi objaśniającymi :
+# `TOA`, `Principal`, `Interest`, `Other`, `GDPPerCapita`, `MeanSalry`, `D_DPD`, `Age`, `Gender` 
  
+fmla <- as.formula(log(LoanAmount)~  TOA + Other + Interest + Principal + D_DPD + Gender + GDPPerCapita+ Age)
+
+m1 <- lm(fmla, data = cases_loanamount_wonas, subset = ix_trn)
+m1
+summary(m1) 
  
- 
- 
- 
- 
- 
+#### Zadanie 6 #####
+
+plot(density(m1$residuals))
+plot(m1)
+
+shapiro.test(sample(m1$residuals, 5000))
+
+# p-value < 0.05 - odrzucamy hipotezę o normlaności rozkładu
+
+#### Zadanie 7 #####
+
+# Korzystając ze zbioru testowego dokonaj predykcji (wyniki zapisz w obiekcie `m1_pred`), 
+# a następinie oblicz bez używania gotowych funkcji: RSS, RSE, TSS i R^2.
+
+m1_pred <- predict(m1, newdata = cases_loanamount_wonas[-ix_trn,])
+
