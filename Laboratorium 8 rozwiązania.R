@@ -157,19 +157,78 @@ new_ix_trn <- setdiff(ix_trn, outliers)
 m2 <- lm(fmla, data = cases_loanamount_wonas, subset = new_ix_trn)
 
 summary(m2)
-#plot(m2)
+plot(m2)
 
-rmse(exp(cases_loanamount_wonas[new_ix_trn]$LoanAmount_log), exp(m2$fitted.values))
-APE_2 <- ape(exp(cases_loanamount_wonas[new_ix_trn]$LoanAmount_log), exp(m2$fitted.values))
-MAPE_2 <- mape(exp(cases_loanamount_wonas[new_ix_trn]$LoanAmount_log), exp(m2$fitted.values))
-summary(APE_2)
+actual_test <- exp(cases_loanamount_wonas[-ix_trn]$LoanAmount_log)
+m2_pred_test <- exp(predict(m2, cases_loanamount_wonas[-ix_trn,]))
 
-# a jaki byl by blad gdybysmy zastapili srednia?
+rmse(actual_test, m2_pred_test)
+APE_m2 <- ape(actual_test, m2_pred_test)
+summary(APE_m2)
+MAPE_2 <- mape(exp(cases_loanamount_wonas[-ix_trn]$LoanAmount_log), exp(m2_pred_test))
+
+# a jaki byl by blad gdybysmy zastapili srednia lub mediana?
 
 LoanAmount_mean <- mean(cases_loanamount_wonas$LoanAmount)
+LoanAmount_median <- median(cases_loanamount_wonas$LoanAmount)
 
-rmse(exp(cases_loanamount_wonas[new_ix_trn]$LoanAmount_log), LoanAmount_mean)
-APE_3 <- ape(exp(cases_loanamount_wonas[new_ix_trn]$LoanAmount_log), LoanAmount_mean)
-MAPE_3 <- mape(exp(cases_loanamount_wonas[new_ix_trn]$LoanAmount_log), LoanAmount_mean)
+
+rmse(actual_test, LoanAmount_mean)
+APE_mean <- ape(actual_test, LoanAmount_mean)
+summary(APE_mean)
+MAPE_mean <- mape(actual_test, LoanAmount_mean)
+
+rmse(actual_test, LoanAmount_median)
+APE_median <- ape(actual_test, LoanAmount_median)
+summary(APE_median)
+MAPE_median <- mape(actual_test, LoanAmount_median)
+
+
+#### Zadanie 10 #####
+
+# Czy w modelu `m1` istnieją cechy, które charakteryzują się współliniowością?
+# Jeżeli tak jak zmieni się model i ocena jakości po ich wyeliminowaniu.
+
+cor_matrix <- cor(cases_loanamount_wonas[, .(TOA ,
+                                             Principal,
+                                             Interest,
+                                             Other,
+                                             Age,
+                                             GDPPerCapita)])
+cor_matrix
+
+vif(m1)
+
+fmla2 <- as.formula(LoanAmount_log~  TOA + D_DPD + Age + Gender + GDPPerCapita)
+
+m3 <- lm(fmla2, data = cases_loanamount_wonas, subset = ix_trn)
+summary(m3)
+m3_pred_tst <- exp(predict(m2, newdata = cases_loanamount_wonas[-ix_trn,]))
+
+vif(m3)
+
+#APE - "na sucho"
+#APE_m2 - bez outlierów
+#APE_mean
+#APE_median
+#APE_m3 - bez skorelowanych
+
+rmse(actual_test, m3_pred_tst)
+APE_3 <- ape(actual_test, m3_pred_tst)
+
+summary(APE)
+summary(APE_m2)
+summary(APE_mean)
+summary(APE_median)
+summary(APE)
 summary(APE_3)
+
+### Zadanie 11 ####
+
+# Zaproponuj własny model regresji liniowej korzystając z wiedzy zdobytej na wykładzie
+# (transformacje zmiennych, interakcje między cechami, dyskretyzacja cech ciągłych, itp...)
+#, który będzie cechować się lepszymi parametrami oceny jakości predyckji od wyestymowanego na ćwiczeniach.
+
+
+######### Liczę na Państwa zaangażowanie i kreatywność :) Do dzieła !!! #############
 
