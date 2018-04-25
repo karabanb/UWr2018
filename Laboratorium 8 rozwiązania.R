@@ -3,7 +3,7 @@ library(data.table)
 library(car)
 library(MASS)
 load("KrukUWr2018.Rdata")
-
+set.seed(1234)
 
 ### Zadanie 1 ####
 
@@ -157,7 +157,19 @@ new_ix_trn <- setdiff(ix_trn, outliers)
 m2 <- lm(fmla, data = cases_loanamount_wonas, subset = new_ix_trn)
 
 summary(m2)
-plot(m2)
+#plot(m2)
 
 rmse(exp(cases_loanamount_wonas[new_ix_trn]$LoanAmount_log), exp(m2$fitted.values))
+APE_2 <- ape(exp(cases_loanamount_wonas[new_ix_trn]$LoanAmount_log), exp(m2$fitted.values))
+MAPE_2 <- mape(exp(cases_loanamount_wonas[new_ix_trn]$LoanAmount_log), exp(m2$fitted.values))
+summary(APE_2)
+
+# a jaki byl by blad gdybysmy zastapili srednia?
+
+LoanAmount_mean <- mean(cases_loanamount_wonas$LoanAmount)
+
+rmse(exp(cases_loanamount_wonas[new_ix_trn]$LoanAmount_log), LoanAmount_mean)
+APE_3 <- ape(exp(cases_loanamount_wonas[new_ix_trn]$LoanAmount_log), LoanAmount_mean)
+MAPE_3 <- mape(exp(cases_loanamount_wonas[new_ix_trn]$LoanAmount_log), LoanAmount_mean)
+summary(APE_3)
 
