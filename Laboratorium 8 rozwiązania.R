@@ -122,7 +122,6 @@ R2 <- 1 - RSS/TSS
 
 # Zmierzymy za pomoca RMSE (Root Mean Square Error) i MAPE (Mean Absolute Percentage Erros)
 
-head(exp(resi))
 
 resids <- cases_loanamount_wonas[-ix_trn, LoanAmount]- exp(m1_pred)
 RMSE <- sqrt(mean(resids^2))
@@ -137,6 +136,8 @@ MAPE <-mean(APE)
 library(broom)
 
 broom::augment(m1)
+
+
 
 
 
