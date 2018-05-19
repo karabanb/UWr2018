@@ -1,0 +1,43 @@
+---
+title: "Metody Statystyczne w Zarządzaniu Wierzytelnościami Masowymi"
+author: "Bartlomiej Karaban"
+date: "17 maja 2018"
+output: html_document
+---
+
+## Wymagane biblioteki 
+
+```{r}
+
+library(data.table)
+library(InformationValue)
+
+load("KrukUWr2018.RData")
+```
+
+## Zadanie 1.
+
+Przygotuj dane do budowy modelu, spełniając następujące warunki:
+
+* Zdefniuj zmienną modelowaną bazując na zbiorzed danych `events` (np. Czy klient wpłacił więcej niż 300 zł w pierwszych
+6 miesiącach obsługi).
+
+* Bazując na wiedzy zdobytej dotychczas w Twoim intensywnym toku nauki imputuj braki danych tam gdzie widzisz tego sens.
+
+* wskaż zmiennę skorelowane ze sobą i zapisz macierz korelacji.
+
+## Zadanie 2. 
+
+Sprawdź siłe predykcyjną wszystkich cech za pomocą współczynnika IV (Information Value)
+
+## Zadanie 3.
+
+Przekoduj zmienne na WoE.
+
+## Zadanie 4.
+
+Zbuduj kilka wersji modeli metodą regresji logistycznej (np. zmieniając predyktory, uwględniając wagi)
+
+## Zadanie 5.
+
+Porównaj powstałe modele za pomocą m.in. współczynnika Gini, macierzy klasyfikacji (dla wybranego punktu cut-off) i wykresu separacji dobrych i złych .
