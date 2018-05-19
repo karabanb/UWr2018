@@ -75,3 +75,6 @@ plot(density(log(cases_loanamount_wonas$LoanAmount)))
 fmla <- as.formula(log(LoanAmount)~  TOA + Other + Interest + Principal + D_DPD + Gender + GDPPerCapita+ Age)
 
 m1 <- lm(fmla, data = cases_loanamount_wonas, subset = ix_trn)
+
+
+

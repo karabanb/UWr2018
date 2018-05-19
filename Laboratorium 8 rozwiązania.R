@@ -45,7 +45,7 @@ sapply(cases_loanamount, function(x){sum(is.na(x))})
  
 # * Dokonaj dyskretyzacji cechy DPD a wartościom `NA` przypisz poziom `brak danych`, cechę zapisz jako `D_DPD`
 
- cases_loanamount[, D_DPD := cut(DPD, breaks = c(0,180, 360, 720, Inf))]
+ cases_loanamount[, D_DPD := cut(DPD, breaks = c(-Inf, 180, 360, 720, Inf))]
  
 cases_loanamount[is.na(D_DPD), "D_DPD"] <- "brak danych"
 cases_loanamount[,DPD:=NULL]
@@ -76,6 +76,8 @@ cases_loanamount_wonas[LoanAmount==0, LoanAmount:=1]
 plot(density(log(cases_loanamount_wonas$LoanAmount)))
 
 cases_loanamount_wonas[, LoanAmount_log := log(LoanAmount)]
+
+boxplot(cases_loanamount_wonas$LoanAmount_log)
 
 #### Zadanie 5 ####
 
@@ -133,6 +135,7 @@ m1_pred_tst <- exp(m1_pred_tst)
 rsids_tst <- cases_loanamount_wonas[-ix_trn]$LoanAmount - m1_pred_tst
 RMSE <- sqrt(mean(rsids_tst^2))
 APE <- abs(rsids_tst)/cases_loanamount_wonas[-ix_trn]$LoanAmount
+summary(APE)
 quantile(APE, seq(0, 1, .05))
 MAPE <-mean(APE)
 
@@ -148,7 +151,7 @@ library(Metrics)
 pretty <- data.table(augment(m1))
 
 pretty[order(-.hat)][1:50,] # 20 obserwacji z najwyzszym odcyleniem LoanAmount od sredniej LoanAmount
-outliers <- pretty[order(-.cooksd)][1:50, .rownames] #20 obserwacji z najwiekszym dystansem Cooka
+outliers <- pretty[order(-.cooksd)][1:20, .rownames] #20 obserwacji z najwiekszym dystansem Cooka
 
 outliers <- as.integer(outliers)
 
@@ -230,5 +233,5 @@ summary(APE_3)
 #, który będzie cechować się lepszymi parametrami oceny jakości predyckji od wyestymowanego na ćwiczeniach.
 
 
-######### Liczę na Państwa zaangażowanie i kreatywność :) Do dzieła !!! #############
+## Liczę na Państwa zaangażowanie i kreatywność :) Do dzieła !!! #############
 
